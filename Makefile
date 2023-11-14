@@ -3,3 +3,6 @@ all:
 
 run:
 	./test
+
+clean:
+	rm test

@@ -14,9 +14,14 @@ void setDataOnDataContainer(
     void (*dataDestroyCallback)(void *),
     void (*displayCallback)(void *, size_t));
 
+void
+getDataOnDataContainer(
+    DataContainer * dataContainer,
+    void ** data,
+    size_t * size);
 
 DataContainer *
-createDataContainer(
+encapsulateDataOnDataContainer(
     void * data,
     size_t size,
     void (*dataDestroyCallback)(void *),
