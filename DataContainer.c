@@ -121,11 +121,15 @@ displayDataContainer(DataContainer * dataContainer)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-DataContainer *
-destroyDataContainer(DataContainer * dataContainer)
+void
+destroyDataContainer(DataContainer ** dataContainer)
 {
-    clearDataOnDataContainer(dataContainer);
-    free(dataContainer);
+    clearDataOnDataContainer(*dataContainer);
+
+    if(*dataContainer != NULL)
+    {
+        free(*dataContainer);
+    }
     
-    return NULL;
+    *dataContainer = NULL;
 }

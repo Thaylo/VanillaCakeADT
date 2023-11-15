@@ -5,10 +5,14 @@
 
 typedef struct DataContainer DataContainer;
 
-DataContainer * createEmptyDataContainer();
 
-void setDataOnDataContainer(
-    DataContainer * dataContainer,
+/*-----------------------------------------------------------------------------------------------*/
+/* We assume the DataContainer data structure will take the ownership of "void * data" and we can
+dealocate "void * data" only by using the clearDataOnDataContainer function.
+CAUTION: Trying to dealocate "void * data" outside of DataContainer functions will result in crash
+due to double free. */
+DataContainer *
+encapsulateDataOnDataContainer(
     void * data,
     size_t size,
     void (*dataDestroyCallback)(void *),
@@ -20,17 +24,9 @@ getDataOnDataContainer(
     void ** data,
     size_t * size);
 
-DataContainer *
-encapsulateDataOnDataContainer(
-    void * data,
-    size_t size,
-    void (*dataDestroyCallback)(void *),
-    void (*displayCallback)(void *, size_t));
 
 void displayDataContainer(DataContainer * dataContainer);
 
-void clearDataOnDataContainer(DataContainer * dataContainer);
-
-DataContainer * destroyDataContainer(DataContainer * dataContainer);
+void destroyDataContainer(DataContainer ** dataContainer);
 
 #endif /* DATACONTAINER_H */
