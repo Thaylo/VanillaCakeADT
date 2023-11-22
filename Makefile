@@ -45,4 +45,9 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 clean:
 	@echo "Cleaning $(TARGET)..."; $(RM) -r $(BUILDDIR) $(TARGET)
 
+rerun:
+	make clean
+	make
+	./bin/$(EXECUTABLE)
+
 .PHONY: clean
