@@ -1,6 +1,10 @@
 #ifndef DATACONTAINER_H
 #define DATACONTAINER_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdlib.h>
 
 typedef struct DataContainer DataContainer;
@@ -24,9 +28,14 @@ getDataOnDataContainer(
     void ** data,
     size_t * size);
 
+void *getDataPointerForTesting(DataContainer *dataContainer);
 
 void displayDataContainer(DataContainer * dataContainer);
 
 void destroyDataContainer(DataContainer ** dataContainer);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* DATACONTAINER_H */

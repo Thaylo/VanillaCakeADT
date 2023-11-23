@@ -52,3 +52,12 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Third-party
+third-party
+
+# Build
+build
+
+# VS Code
+.vscode
