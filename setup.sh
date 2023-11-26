@@ -17,6 +17,6 @@ cd ..
 cd ..
 mkdir build
 cd build
-cmake ..
+cmake -DCMAKE_CXX_STANDARD=14 ..
 make
 ./tests/unit_tests
