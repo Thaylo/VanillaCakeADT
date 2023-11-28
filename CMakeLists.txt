@@ -29,6 +29,8 @@ target_include_directories(VanillaCakeLib
 # Create the executable for the main project
 add_executable(VanillaCake src/main.c)
 
+target_compile_options(VanillaCake PRIVATE /MT)
+
 # Link the library to the main executable
 target_link_libraries(VanillaCake PRIVATE VanillaCakeLib)
 

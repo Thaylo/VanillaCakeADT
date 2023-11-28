@@ -14,9 +14,17 @@ target_link_libraries(unit_tests PRIVATE VanillaCakeLib)
 # Include Google Test headers
 target_include_directories(unit_tests PRIVATE ${CMAKE_SOURCE_DIR}/third_party/googletest/googletest/include)
 
+target_compile_options(unit_tests PRIVATE /MT)
+
 # Link against the Google Test library
-target_link_libraries(unit_tests PRIVATE ${CMAKE_SOURCE_DIR}/third_party/googletest/build/lib/libgtest.a)
-target_link_libraries(unit_tests PRIVATE ${CMAKE_SOURCE_DIR}/third_party/googletest/build/lib/libgtest_main.a)
+if (WIN32)
+ # On Windows, use .lib files
+    target_link_libraries(unit_tests PRIVATE ${CMAKE_SOURCE_DIR}/third_party/googletest/build/lib/Release/gtest.lib)
+    target_link_libraries(unit_tests PRIVATE ${CMAKE_SOURCE_DIR}/third_party/googletest/build/lib/Release/gtest_main.lib)
+else()
+    target_link_libraries(unit_tests PRIVATE ${CMAKE_SOURCE_DIR}/third_party/googletest/build/lib/libgtest.a)
+    target_link_libraries(unit_tests PRIVATE ${CMAKE_SOURCE_DIR}/third_party/googletest/build/lib/libgtest_main.a)
+endif()
 
 # Link against the source files
 target_sources(unit_tests PRIVATE

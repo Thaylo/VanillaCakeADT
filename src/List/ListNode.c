@@ -12,8 +12,11 @@ ListNode * createEmptyListNode()
 {
     ListNode * listNode = (ListNode *) malloc(sizeof(ListNode));
 
-    listNode->dataContainer = NULL;
-    listNode->next = NULL;
+    if (listNode != NULL)
+    {
+        listNode->dataContainer = NULL;
+        listNode->next = NULL;
+    }
 
     return listNode;
 }
@@ -62,11 +65,12 @@ DataContainer * getDataFromListNode(ListNode * listNode)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-DataContainer * clearDataContainerFromListNode(ListNode * listNode)
+void clearDataContainerFromListNode(ListNode * listNode)
 {
     if(listNode != NULL)
     {
         destroyDataContainer(&(listNode->dataContainer));
+        listNode->dataContainer = NULL;
     }
 }
 
