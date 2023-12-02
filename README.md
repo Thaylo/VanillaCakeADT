@@ -12,7 +12,7 @@ Vanilla C Abstract Data Types
 - Make sure you have APT since it has been tested and works for Ubuntu
 - Run:
 ```
-sudo apt-get -y install cmake
+sudo apt -y install cmake
 ```
 - Open a shell and run:
 ```
