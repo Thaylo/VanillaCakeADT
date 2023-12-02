@@ -2,6 +2,7 @@
 set(TEST_FILES
     test_main.cpp
     test_DataContainer.cpp
+    test_ListNode.cpp
     # Add other test files as needed
 )
 
@@ -33,5 +34,6 @@ endif()
 # Link against the source files
 target_sources(unit_tests PRIVATE
     ${CMAKE_SOURCE_DIR}/src/DataContainer/DataContainer.c
+    ${CMAKE_SOURCE_DIR}/src/List/ListNode.c
     # Add other source files as needed
 )
