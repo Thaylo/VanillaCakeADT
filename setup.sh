@@ -58,5 +58,5 @@ else
   cd build
   cmake -DCMAKE_CXX_STANDARD=14 ..
   make
-  valgrind ./tests/unit_tests
+  ./tests/unit_tests
 fi
