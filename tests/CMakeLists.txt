@@ -14,14 +14,18 @@ target_link_libraries(unit_tests PRIVATE VanillaCakeLib)
 # Include Google Test headers
 target_include_directories(unit_tests PRIVATE ${CMAKE_SOURCE_DIR}/third_party/googletest/googletest/include)
 
-target_compile_options(unit_tests PRIVATE /MT)
+
 
 # Link against the Google Test library
 if (WIN32)
- # On Windows, use .lib files
+    
+    # Specific Flag (MT) for Microsoft Visual Studio's compiler
+    target_compile_options(unit_tests PRIVATE /MT)
+    # On Windows, use .lib files
     target_link_libraries(unit_tests PRIVATE ${CMAKE_SOURCE_DIR}/third_party/googletest/build/lib/Release/gtest.lib)
     target_link_libraries(unit_tests PRIVATE ${CMAKE_SOURCE_DIR}/third_party/googletest/build/lib/Release/gtest_main.lib)
 else()
+    target_compile_options(unit_tests PRIVATE -pthread) # Use appropriate flag for multithreading on Linux
     target_link_libraries(unit_tests PRIVATE ${CMAKE_SOURCE_DIR}/third_party/googletest/build/lib/libgtest.a)
     target_link_libraries(unit_tests PRIVATE ${CMAKE_SOURCE_DIR}/third_party/googletest/build/lib/libgtest_main.a)
 endif()
