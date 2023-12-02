@@ -3,6 +3,8 @@
 
 #include "../include/DataContainer/DataContainer.h"
 
+
+
 void displayIntegerArray(void * integerArray, size_t numberOfElements)
 {
     for(int i = 0; i < numberOfElements; ++i)
@@ -18,19 +20,6 @@ protected:
     void SetUp() override
     {
         
-        int * integerArray = (int*) malloc (integerArraySize * sizeof(int));
-        for(int i = 0; i < integerArraySize; ++i)
-        {
-            integerArray[i] = expectedArrayContent[i];
-        }
-
-        // Initialization code that will be run before each test
-        dataContainer = encapsulateDataOnDataContainer(
-            integerArray,
-            integerArraySize,
-            free,
-            displayIntegerArray
-        );
     }
 
     void TearDown() override
@@ -43,15 +32,36 @@ protected:
     DataContainer *dataContainer;
     size_t integerArraySize = 3;
     int expectedArrayContent[3] = {1,2,3};
+    int * integerArray;
 };
 
 // Test case for data store and retrieval on data container
 TEST_F(DataContainerTest, ContainerStoreAndRetrieval)
 {
-    int *retrievedTestContent = (int*) getDataPointerForTesting(dataContainer);
+    size_t integerArraySize = 3;
+    int expectedArrayContent[integerArraySize] = {1,2,1024*1024};
+
+    int * integerArray = (int*) malloc (integerArraySize * sizeof(int));
     
     for(int i = 0; i < integerArraySize; ++i)
     {
-        EXPECT_EQ(retrievedTestContent[i], expectedArrayContent[i]);
+        integerArray[i] = expectedArrayContent[i];
     }
+
+    dataContainer = encapsulateDataOnDataContainer(integerArray, integerArraySize, free, dataContainerDummyDisplay);
+
+    int * retrievedInternalDataFromDataContainer;
+    size_t retrievedInternalDataSizeFromDataContainer;
+
+    getDataOnDataContainer(
+        dataContainer,
+        (void**) &retrievedInternalDataFromDataContainer,
+        &retrievedInternalDataSizeFromDataContainer);
+
+        EXPECT_EQ(retrievedInternalDataFromDataContainer, integerArray);
+        EXPECT_EQ(retrievedInternalDataSizeFromDataContainer, integerArraySize);
+        for(int i = 0; i < integerArraySize; ++i)
+        {
+            EXPECT_EQ(retrievedInternalDataFromDataContainer[i], integerArray[i]);
+        }
 }

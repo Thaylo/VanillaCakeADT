@@ -28,11 +28,11 @@ getDataOnDataContainer(
     void ** data,
     size_t * size);
 
-void *getDataPointerForTesting(DataContainer *dataContainer);
-
 void displayDataContainer(DataContainer * dataContainer);
 
 void destroyDataContainer(DataContainer ** dataContainer);
+
+void dataContainerDummyDisplay(void * data, size_t size);
 
 #ifdef __cplusplus
 }

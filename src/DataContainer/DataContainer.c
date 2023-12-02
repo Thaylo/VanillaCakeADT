@@ -47,15 +47,6 @@ setDataOnDataContainer(
 
 
 /*-----------------------------------------------------------------------------------------------*/
-// Getter function to obtain the internal data pointer for testing
-void *getDataPointerForTesting(DataContainer *dataContainer)
-{
-    return dataContainer->data;
-}
-
-
-
-/*-----------------------------------------------------------------------------------------------*/
 void
 getDataOnDataContainer(
     DataContainer * dataContainer,
@@ -141,4 +132,12 @@ destroyDataContainer(DataContainer ** dataContainer)
     }
     
     *dataContainer = NULL;
+}
+
+
+
+/*-----------------------------------------------------------------------------------------------*/
+void dataContainerDummyDisplay(void * data, size_t size)
+{
+
 }
