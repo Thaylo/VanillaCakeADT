@@ -48,7 +48,7 @@ TEST_F(ListNodeTest, ListNodeEncapsulationOfDataContainer_nullData)
 TEST_F(ListNodeTest, ListNodeEncapsulationOfDataContainer_notNullData)
 {
     size_t integerArraySize = 3;
-    int expectedArrayContent[integerArraySize] = {1,2,1024*1024};
+    int expectedArrayContent[3] = {1,2,1024*1024};
 
     int * integerArray = (int*) malloc (integerArraySize * sizeof(int));
     
