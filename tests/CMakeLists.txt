@@ -3,6 +3,7 @@ set(TEST_FILES
     test_main.cpp
     test_DataContainer.cpp
     test_ListNode.cpp
+    test_List.cpp
     # Add other test files as needed
 )
 
@@ -25,6 +26,7 @@ if (WIN32)
     # On Windows, use .lib files
     target_link_libraries(unit_tests PRIVATE ${CMAKE_SOURCE_DIR}/third_party/googletest/build/lib/Release/gtest.lib)
     target_link_libraries(unit_tests PRIVATE ${CMAKE_SOURCE_DIR}/third_party/googletest/build/lib/Release/gtest_main.lib)
+    
 else()
     target_compile_options(unit_tests PRIVATE -pthread) # Use appropriate flag for multithreading on Linux
     target_link_libraries(unit_tests PRIVATE ${CMAKE_SOURCE_DIR}/third_party/googletest/build/lib/libgtest.a)
@@ -35,5 +37,7 @@ endif()
 target_sources(unit_tests PRIVATE
     ${CMAKE_SOURCE_DIR}/src/DataContainer/DataContainer.c
     ${CMAKE_SOURCE_DIR}/src/List/ListNode.c
+    ${CMAKE_SOURCE_DIR}/src/List/List.c
+    
     # Add other source files as needed
 )

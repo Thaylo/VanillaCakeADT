@@ -14,12 +14,11 @@ protected:
 
     void TearDown() override
     {
-        
+        destroyListNode(&listNode);
     }
     
     DataContainer * dataContainer;
     ListNode * listNode;
-    
 };
 
 
@@ -40,8 +39,6 @@ TEST_F(ListNodeTest, ListNodeEncapsulationOfDataContainer_nullData)
 
     EXPECT_EQ(retrievedInternalDataFromDataContainer, nullptr);
     EXPECT_EQ(retrievedInternalDataSizeFromDataContainer, 0);
-
-    destroyListNode(&listNode);
 }
 
 
@@ -61,6 +58,4 @@ TEST_F(ListNodeTest, ListNodeEncapsulationOfDataContainer_notNullData)
     listNode = encapsulateDataContainerOnListNode(dataContainer);
     DataContainer * retrievedDataContainer = getDataFromListNode(listNode);
     EXPECT_EQ(dataContainer, retrievedDataContainer);
-
-    destroyListNode(&listNode);
 }

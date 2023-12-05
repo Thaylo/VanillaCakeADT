@@ -28,7 +28,10 @@ void setDataOnListNode(
     ListNode * listNode,
     DataContainer * dataContainer)
 {
-    listNode->dataContainer = dataContainer;
+    if (listNode != NULL)
+    {
+        listNode->dataContainer = dataContainer;
+    }
 }
 
 
@@ -38,11 +41,37 @@ ListNode * encapsulateDataContainerOnListNode(DataContainer * dataContainer)
 {
     ListNode * listNode = createEmptyListNode();
 
-    setDataOnListNode(listNode, dataContainer);
-
+    if (listNode != NULL)
+    {
+        setDataOnListNode(listNode, dataContainer);
+    }
     return listNode;
 }
 
+
+
+/*-----------------------------------------------------------------------------------------------*/
+ListNode * getNextListNode(ListNode * listNode)
+{
+    if(listNode != NULL)
+    {
+        return listNode->next;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+
+/*-----------------------------------------------------------------------------------------------*/
+void setNextListNode(ListNode * listNode, ListNode * nextListNode)
+{
+    if(listNode != NULL)
+    {
+        listNode->next = nextListNode;
+    }
+}
 
 
 /*-----------------------------------------------------------------------------------------------*/

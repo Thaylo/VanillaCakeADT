@@ -9,6 +9,7 @@ set(CMAKE_C_STANDARD 99)
 
 # Add source files
 set(SOURCE_FILES
+    ${CMAKE_SOURCE_DIR}/src/List/List.c
     ${CMAKE_SOURCE_DIR}/src/List/ListNode.c
     ${CMAKE_SOURCE_DIR}/src/DataContainer/DataContainer.c
     # Add other source files as needed

@@ -11,6 +11,10 @@ typedef struct ListNode ListNode;
 
 ListNode * encapsulateDataContainerOnListNode(DataContainer * dataContainer);
 
+ListNode * getNextListNode(ListNode * listNode);
+
+void setNextListNode(ListNode * listNode, ListNode * nextListNode);
+
 DataContainer * getDataFromListNode(ListNode * listNode);
 
 void destroyListNode(ListNode ** listNode);
