@@ -120,3 +120,54 @@ TEST_F(ListTest, insertToFrontOfList_ordering_and_popFromFrontOfList_test)
     }
 
 }
+
+TEST_F(ListTest, elementAtList_empty_test)
+{
+    EXPECT_EQ(elementAtList(list, -1), (DataContainer *) NULL);
+    EXPECT_EQ(elementAtList(list, 0), (DataContainer *) NULL);
+    EXPECT_EQ(elementAtList(list, 1), (DataContainer *) NULL);
+    EXPECT_EQ(elementAtList(list, 10), (DataContainer *) NULL);
+}
+
+TEST_F(ListTest, elementAtList_notEmpty_test)
+{
+    int numberOfElements = 5;
+    size_t size = numberOfElements * sizeof(float*);
+    float * data[5];
+    for(int i = 0; i < numberOfElements; ++i)
+    {
+         // DataContainer is responsible for deallocating those floats
+        data[i] = (float*) malloc(sizeof(float));
+
+        // Creating the source data as an array: 0.0, 1.0, 2.0, 3.0, 4.0
+        *(data[i]) = i;
+    }
+    
+    for(int i = 0; i < numberOfElements; ++i)
+    {
+        DataContainer * dataContainer = encapsulateDataOnDataContainer(
+            data[i],
+            sizeof(float),
+            free,
+            testHelper_floatPointerDisplayFunction);
+
+        // Creating the sequence of values: 4.0, 3.0, 2.0, 1.0, 0.0
+        int status = insertToFrontOfList(list, dataContainer);
+        EXPECT_EQ(status, SUCCESS);
+    }
+    
+    EXPECT_EQ(elementAtList(list, -1), (DataContainer *) NULL);
+    for(int i = 0; i < numberOfElements; ++i)
+    {
+        EXPECT_NE(elementAtList(list, i), (DataContainer *) NULL);
+    }
+    EXPECT_EQ(elementAtList(list, numberOfElements), (DataContainer *) NULL);
+}
+
+TEST_F(ListTest, elementAtList_nullList_test)
+{
+    EXPECT_EQ(elementAtList(NULL, -1), (DataContainer *) NULL);
+    EXPECT_EQ(elementAtList(NULL, 0), (DataContainer *) NULL);
+    EXPECT_EQ(elementAtList(NULL, 1), (DataContainer *) NULL);
+    EXPECT_EQ(elementAtList(NULL, 10), (DataContainer *) NULL);
+}

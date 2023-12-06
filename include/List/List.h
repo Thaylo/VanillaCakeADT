@@ -15,6 +15,8 @@ List * createEmptyList();
 
 int insertToFrontOfList(List * list, DataContainer * dataContainer);
 
+DataContainer * elementAtList(List * list, int position);
+
 void removeFromFrontOfList(List * list);
 
 DataContainer * popFromFrontOfList(List * list);

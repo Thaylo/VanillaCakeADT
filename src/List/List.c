@@ -45,6 +45,35 @@ int insertToFrontOfList(List * list, DataContainer * dataContainer)
 
 
 /*-----------------------------------------------------------------------------------------------*/
+DataContainer * elementAtList(List * list, int position)
+{
+    DataContainer * element = NULL;
+    int count = 0;
+
+    if (list != NULL)
+    {
+        for (
+            ListNode * nodeIterator = list->first;
+            nodeIterator != NULL;
+            nodeIterator = getNextListNode(nodeIterator) )
+        {
+
+            if(count == position)
+            {
+                element = getDataFromListNode(nodeIterator);
+                break;
+            }
+
+            count++;
+        }
+    }
+
+    return element;
+}
+
+
+
+/*-----------------------------------------------------------------------------------------------*/
 // The data stored in the first element will be deleted by a DataContainer callback.
 void removeFromFrontOfList(List * list)
 {
