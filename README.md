@@ -1,5 +1,8 @@
 # VanillaCakeADT
-Vanilla C Abstract Data Types
+
+A portable library to speed up C software projects. It is and will always be compatible with in Windows, GNU/Linux and macOS environments.
+
+VanillaCakeADT stands for Vanilla C and CMake with C Abstract Data Types.
 
 ## Setup
 
