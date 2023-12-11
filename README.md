@@ -1,6 +1,6 @@
 # VanillaCakeADT
 
-A portable library to speed up C software projects. It is and will always be compatible with in Windows, GNU/Linux and macOS environments.
+A portable library to speed up C software projects. It is and will always be compatible with Windows, GNU/Linux and macOS OSes.
 
 VanillaCakeADT stands for Vanilla C and CMake with C Abstract Data Types.
 
