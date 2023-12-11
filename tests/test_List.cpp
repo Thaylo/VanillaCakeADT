@@ -129,6 +129,14 @@ TEST_F(ListTest, elementAtList_empty_test)
     EXPECT_EQ(elementAtList(list, 10), (DataContainer *) NULL);
 }
 
+TEST_F(ListTest, elementAtList_nullList_test)
+{
+    EXPECT_EQ(elementAtList(NULL, -1), (DataContainer *) NULL);
+    EXPECT_EQ(elementAtList(NULL, 0), (DataContainer *) NULL);
+    EXPECT_EQ(elementAtList(NULL, 1), (DataContainer *) NULL);
+    EXPECT_EQ(elementAtList(NULL, 10), (DataContainer *) NULL);
+}
+
 TEST_F(ListTest, elementAtList_notEmpty_test)
 {
     int numberOfElements = 5;
@@ -139,8 +147,8 @@ TEST_F(ListTest, elementAtList_notEmpty_test)
          // DataContainer is responsible for deallocating those floats
         data[i] = (float*) malloc(sizeof(float));
 
-        // Creating the source data as an array: 0.0, 1.0, 2.0, 3.0, 4.0
-        *(data[i]) = i;
+        // Creating the source data as an array: 0.0, 2.0, 4.0, 6.0, 8.0
+        *(data[i]) = i*2;
     }
     
     for(int i = 0; i < numberOfElements; ++i)
@@ -151,7 +159,7 @@ TEST_F(ListTest, elementAtList_notEmpty_test)
             free,
             testHelper_floatPointerDisplayFunction);
 
-        // Creating the sequence of values: 4.0, 3.0, 2.0, 1.0, 0.0
+        // Storing the source data
         int status = insertToFrontOfList(list, dataContainer);
         EXPECT_EQ(status, SUCCESS);
     }
@@ -159,15 +167,15 @@ TEST_F(ListTest, elementAtList_notEmpty_test)
     EXPECT_EQ(elementAtList(list, -1), (DataContainer *) NULL);
     for(int i = 0; i < numberOfElements; ++i)
     {
-        EXPECT_NE(elementAtList(list, i), (DataContainer *) NULL);
+        void * dataContainerData;
+        size_t dataContainerSize;
+
+        getDataOnDataContainer(elementAtList(list, i), &dataContainerData, &dataContainerSize);
+        
+        // Verifying against the sequence of values: 4.0, 3.0, 2.0, 1.0, 0.0
+        EXPECT_EQ(*(float*) dataContainerData, *(data[numberOfElements - (i + 1)]));
     }
+
     EXPECT_EQ(elementAtList(list, numberOfElements), (DataContainer *) NULL);
 }
 
-TEST_F(ListTest, elementAtList_nullList_test)
-{
-    EXPECT_EQ(elementAtList(NULL, -1), (DataContainer *) NULL);
-    EXPECT_EQ(elementAtList(NULL, 0), (DataContainer *) NULL);
-    EXPECT_EQ(elementAtList(NULL, 1), (DataContainer *) NULL);
-    EXPECT_EQ(elementAtList(NULL, 10), (DataContainer *) NULL);
-}
