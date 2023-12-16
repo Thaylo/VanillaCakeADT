@@ -4,6 +4,7 @@ set(TEST_FILES
     test_DataContainer.cpp
     test_ListNode.cpp
     test_List.cpp
+    test_List_Helpers.cpp
     # Add other test files as needed
 )
 
