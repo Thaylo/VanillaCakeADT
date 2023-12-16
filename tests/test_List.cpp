@@ -6,10 +6,14 @@
 #include "../include/DataContainer/DataContainer.h"
 
 #include "test_List_Helpers.h"
-#ifdef _WIN32
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 #include <sys/timeb.h>
-#else
+#elif __APPLE__
+#include <sys/timeb.h>
+#elif __linux__
 #include <sys/time.h>
+#else
+#   error "Unknown compiler"
 #endif
 
 class ListTest : public testing::Test
@@ -150,7 +154,6 @@ TEST_F(ListTest, countElementsOnList)
 
 TEST_F(ListTest, sortList)
 {
-    struct timeb start, end;
     int diff;
     int numberOfElements = 5;
     
@@ -163,31 +166,36 @@ TEST_F(ListTest, sortList)
         printf("populateListWithFloatsDecreasing failed \n");
         return;
     }
-
-    //std::cout << "Original List values:" << std::endl;
-    //displayList(list);
-
+    
     sortList(list, compareFloats, 1);
-    //std::cout << "List values increasing:" << std::endl;
-    //displayList(list);
+    
     isSorted = isListSorted(list, compareFloats, 1);
     EXPECT_EQ(isSorted, 1);
 
     sortList(list, compareFloats, 0);
-    //std::cout << "List values decreasing:" << std::endl;
-    //displayList(list);
+    
     isSorted = isListSorted(list, compareFloats, 0);
     EXPECT_EQ(isSorted, 1);
 }
 
+#ifdef STRESS_TEST
 TEST_F(ListTest, sortList_StressTest)
 {
-    return; // TODO Remove this return statement line to experiment with this test.
-
-    struct timeb start, end;
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+struct timeb start, end;
+#elif __APPLE__
+struct timeb start, end;
+#elif __linux__
+struct timeb start, end;
+#else
+#   error "Unknown compiler"
+#endif
+    
     int diff;
-    int stressFactor = 42709;
-    for(int numberOfElements = stressFactor; numberOfElements < stressFactor+1; numberOfElements += 1)
+    int stressFactor = 50000;
+    int increments = 1;
+
+    for(int numberOfElements = stressFactor; numberOfElements < stressFactor+increments; numberOfElements += 1)
     {
         int i = 0;
         int status = populateListWithFloats(list, numberOfElements, 1);
@@ -235,3 +243,5 @@ TEST_F(ListTest, sortList_StressTest)
         list = createEmptyList();
     }
 }
+
+#endif

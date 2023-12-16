@@ -1,4 +1,5 @@
 #include "List.h"
+#include <stdio.h>
 
 struct List{
     ListNode * first;
