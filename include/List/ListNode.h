@@ -15,6 +15,8 @@ ListNode * getNextListNode(ListNode * listNode);
 
 void setNextListNode(ListNode * listNode, ListNode * nextListNode);
 
+size_t getSizeOfListNodeInBytes(ListNode * listNode);
+
 DataContainer * getDataFromListNode(ListNode * listNode);
 
 void destroyListNode(ListNode ** listNode);

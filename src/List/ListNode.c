@@ -75,6 +75,17 @@ void setNextListNode(ListNode * listNode, ListNode * nextListNode)
 
 
 /*-----------------------------------------------------------------------------------------------*/
+size_t getSizeOfListNodeInBytes(ListNode * listNode)
+{
+    size_t size = 0;
+
+    size += sizeof(ListNode);
+    size += getSizeOfDataContainerInBytes(listNode->dataContainer);
+    
+    return size;
+}
+
+/*-----------------------------------------------------------------------------------------------*/
 DataContainer * getDataFromListNode(ListNode * listNode)
 {
     DataContainer * dataContainer;

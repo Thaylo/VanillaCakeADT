@@ -6,6 +6,11 @@
 #include "../include/DataContainer/DataContainer.h"
 
 #include "test_List_Helpers.h"
+#ifdef _WIN32
+#include <sys/timeb.h>
+#else
+#include <sys/time.h>
+#endif
 
 class ListTest : public testing::Test
 {
@@ -13,6 +18,7 @@ protected:
     void SetUp() override
     {
         list = createEmptyList();
+        srand(time(NULL));   // Initialization, should only be called once.
     }
 
     void TearDown() override
@@ -22,7 +28,6 @@ protected:
     
     List * list;
 };
-
 
 TEST_F(ListTest, createEmptyList)
 {
@@ -59,29 +64,7 @@ TEST_F(ListTest, elementAtList_nullList)
 TEST_F(ListTest, elementAtList_notEmpty)
 {
     int numberOfElements = 5;
-    size_t size = numberOfElements * sizeof(float*);
-    float * data[5];
-    for(int i = 0; i < numberOfElements; ++i)
-    {
-         // DataContainer is responsible for deallocating those floats
-        data[i] = (float*) malloc(sizeof(float));
-
-        // Creating the source data as an array: 0.0, 2.0, 4.0, 6.0, 8.0
-        *(data[i]) = i*2;
-    }
-    
-    for(int i = 0; i < numberOfElements; ++i)
-    {
-        DataContainer * dataContainer = encapsulateDataOnDataContainer(
-            data[i],
-            sizeof(float),
-            free,
-            testHelper_floatPointerDisplayFunction);
-
-        // Storing the source data
-        int status = insertToFrontOfList(list, dataContainer);
-        EXPECT_EQ(status, SUCCESS);
-    }
+    populateListWithFloats(list, numberOfElements, 0);
     
     EXPECT_EQ(elementAtList(list, -1), (DataContainer *) NULL);
     for(int i = 0; i < numberOfElements; ++i)
@@ -92,7 +75,7 @@ TEST_F(ListTest, elementAtList_notEmpty)
         getDataOnDataContainer(elementAtList(list, i), &dataContainerData, &dataContainerSize);
         
         // Verifying against the sequence of values: 4.0, 3.0, 2.0, 1.0, 0.0
-        EXPECT_EQ(*(float*) dataContainerData, *(data[numberOfElements - (i + 1)]));
+        EXPECT_EQ(*(float*) dataContainerData, numberOfElements - (i + 1));
     }
 
     EXPECT_EQ(elementAtList(list, numberOfElements), (DataContainer *) NULL);
@@ -130,7 +113,7 @@ TEST_F(ListTest, popFromFrontOfList)
 {
     int numberOfElements = 5;
 
-    populateListWithFloats(list, numberOfElements);
+    populateListWithFloats(list, numberOfElements, 0);
 
     for(int i = 0; i < numberOfElements; ++i)
     {
@@ -163,4 +146,92 @@ TEST_F(ListTest, countElementsOnList)
     EXPECT_EQ(countElementsOnList(list), 1);
     popFromFrontOfList(list);
     EXPECT_EQ(countElementsOnList(list), 0);
+}
+
+TEST_F(ListTest, sortList)
+{
+    struct timeb start, end;
+    int diff;
+    int numberOfElements = 5;
+    
+    int i = 0;
+    int status = populateListWithFloats(list, numberOfElements, 1);
+    int isSorted;
+
+    if(status != SUCCESS)
+    {
+        printf("populateListWithFloatsDecreasing failed \n");
+        return;
+    }
+
+    //std::cout << "Original List values:" << std::endl;
+    //displayList(list);
+
+    sortList(list, compareFloats, 1);
+    //std::cout << "List values increasing:" << std::endl;
+    //displayList(list);
+    isSorted = isListSorted(list, compareFloats, 1);
+    EXPECT_EQ(isSorted, 1);
+
+    sortList(list, compareFloats, 0);
+    //std::cout << "List values decreasing:" << std::endl;
+    //displayList(list);
+    isSorted = isListSorted(list, compareFloats, 0);
+    EXPECT_EQ(isSorted, 1);
+}
+
+TEST_F(ListTest, sortList_StressTest)
+{
+    return; // TODO Remove this return statement line to experiment with this test.
+
+    struct timeb start, end;
+    int diff;
+    int stressFactor = 42709;
+    for(int numberOfElements = stressFactor; numberOfElements < stressFactor+1; numberOfElements += 1)
+    {
+        int i = 0;
+        int status = populateListWithFloats(list, numberOfElements, 1);
+        int isSorted;
+
+        if(status != SUCCESS)
+        {
+            std::cout << "populateListWithFloatsDecreasing failed \n" << std::endl;
+            return;
+        }
+
+        std::cout << "Original List values:" << std::endl;
+        displayList(list);
+
+        std::cout << "Starting to sort..." << std::endl;
+        ftime(&start);
+        sortList(list, compareFloats, 1);
+        ftime(&end);
+        std::cout << "Sorting finished." << std::endl;
+
+        diff = (int) (1000.0 * (end.time - start.time) + (end.millitm - start.millitm));
+        size_t listSizeInBytes = getListSizeInBytes(list);
+        std::cout << "List size during STRESS TEST: " <<  listSizeInBytes/((float)1024*1024) << "[MB], time to sort:" << diff << " [ms]" << std::endl;
+        std::cout << std::endl;
+
+        std::cout << "List values increasing:" << std::endl;
+        displayList(list);
+        isSorted = isListSorted(list, compareFloats, 1);
+        EXPECT_EQ(isSorted, 1);
+
+        sortList(list, compareFloats, 0);
+
+        std::cout << "List values decreasing:" << std::endl;
+        displayList(list);
+        isSorted = isListSorted(list, compareFloats, 0);
+        EXPECT_EQ(isSorted, 1);
+
+        if(list == NULL)
+        {
+            std::cout << "createEmptyList failed during STRESS TEST\n" << std::endl;
+            return;
+        }
+
+        destroyList(&list);
+        list = createEmptyList();
+    }
 }

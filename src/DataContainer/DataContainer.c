@@ -141,3 +141,17 @@ void dataContainerDummyDisplay(void * data, size_t size)
 {
 
 }
+
+/*-----------------------------------------------------------------------------------------------*/
+size_t getSizeOfDataContainerInBytes(DataContainer * dataContainer)
+{
+    size_t sizeInBytes = 0;
+
+    if(dataContainer != NULL)
+    {
+        sizeInBytes += dataContainer->size;
+    }
+
+    sizeInBytes += sizeof(DataContainer);
+    return sizeInBytes;
+}

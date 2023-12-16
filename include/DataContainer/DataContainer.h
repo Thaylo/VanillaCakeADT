@@ -34,6 +34,8 @@ void destroyDataContainer(DataContainer ** dataContainer);
 
 void dataContainerDummyDisplay(void * data, size_t size);
 
+size_t getSizeOfDataContainerInBytes(DataContainer * dataContainer);
+
 #ifdef __cplusplus
 }
 #endif

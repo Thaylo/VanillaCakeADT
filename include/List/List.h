@@ -23,7 +23,19 @@ DataContainer * popFromFrontOfList(List * list);
 
 int countElementsOnList(List * list);
 
+void sortList(
+    List * list,
+    int (*sortComparison)(DataContainer *, DataContainer *, int usingAscendingOrder),
+    int usingAscendingOrder);
+
 void displayList(List * list);
+
+size_t getListSizeInBytes(List * list);
+
+int isListSorted(
+    List * list,
+    int (*sortComparison)(DataContainer *, DataContainer *, int usingAscendingOrder),
+    int usingAscendingOrder);
 
 void destroyList(List ** List);
 
