@@ -264,6 +264,7 @@ void displayList(List * list)
             else if(cnt == 4)
             {
                 printf(" ... ");
+                break;
             }
             cnt++;
         }
