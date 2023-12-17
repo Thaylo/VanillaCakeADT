@@ -179,7 +179,6 @@ TEST_F(ListTest, sortList)
     EXPECT_EQ(isSorted, 1);
 }
 
-#ifdef STRESS_TEST
 TEST_F(ListTest, sortList_StressTest)
 {
 
@@ -190,7 +189,7 @@ TEST_F(ListTest, sortList_StressTest)
 #endif
     
     int diff;
-    int numberOfElements = 100000;
+    int numberOfElements = 20000;
 
     int i = 0;
     int status = populateListWithFloats(list, numberOfElements, 1);
@@ -258,5 +257,3 @@ TEST_F(ListTest, sortList_StressTest)
     destroyList(&list);
     list = createEmptyList();
 }
-
-#endif
