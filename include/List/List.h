@@ -21,14 +21,14 @@ void removeFromFrontOfList(List * list);
 
 DataContainer * popFromFrontOfList(List * list);
 
-int countElementsOnList(List * list);
+int getListLength(List * list);
 
 void sortList(
     List * list,
     int (*sortComparison)(DataContainer *, DataContainer *, int usingAscendingOrder),
     int usingAscendingOrder);
 
-void displayList(List * list);
+void displayList(void * listPointer);
 
 size_t getListSizeInBytes(List * list);
 
@@ -37,7 +37,7 @@ int isListSorted(
     int (*sortComparison)(DataContainer *, DataContainer *, int usingAscendingOrder),
     int usingAscendingOrder);
 
-void destroyList(List ** List);
+void destroyList(void * list);
 
 #ifdef __cplusplus
 }

@@ -28,7 +28,7 @@ protected:
 
     void TearDown() override
     {
-        destroyList(&list);
+        destroyList(list);
     }
     
     List * list;
@@ -36,7 +36,7 @@ protected:
 
 TEST_F(ListTest, createEmptyList)
 {
-    EXPECT_EQ(countElementsOnList(list), 0);
+    EXPECT_EQ(getListLength(list), 0);
 }
 
 TEST_F(ListTest, insertToFrontOfList)
@@ -47,7 +47,7 @@ TEST_F(ListTest, insertToFrontOfList)
         int status = insertToFrontOfList(list, NULL);
         EXPECT_EQ(status, SUCCESS);
     }
-    EXPECT_EQ(countElementsOnList(list), repetitions);
+    EXPECT_EQ(getListLength(list), repetitions);
 }
 
 TEST_F(ListTest, elementAtList_empty)
@@ -97,21 +97,21 @@ TEST_F(ListTest, removeFromFrontOfList)
         EXPECT_EQ(status, SUCCESS);
     }
     
-    EXPECT_EQ(countElementsOnList(list), inclusions);
+    EXPECT_EQ(getListLength(list), inclusions);
     
     for(int i = 0; i < removals; ++i)
     {
         removeFromFrontOfList(list);
     }
 
-    EXPECT_EQ(countElementsOnList(list), inclusions - removals);
+    EXPECT_EQ(getListLength(list), inclusions - removals);
 
     for(int i = removals; i < inclusions; ++i)
     {
         removeFromFrontOfList(list);
     }
 
-    EXPECT_EQ(countElementsOnList(list), 0);
+    EXPECT_EQ(getListLength(list), 0);
 }
 
 TEST_F(ListTest, popFromFrontOfList)
@@ -124,7 +124,7 @@ TEST_F(ListTest, popFromFrontOfList)
     {
         DataContainer * dataContainer = popFromFrontOfList(list);
 
-        EXPECT_EQ(countElementsOnList(list), numberOfElements-(i+1));
+        EXPECT_EQ(getListLength(list), numberOfElements-(i+1));
 
         float * retrievedPointerValue;
         size_t retrievedValueSize;
@@ -140,17 +140,17 @@ TEST_F(ListTest, popFromFrontOfList)
     }
 }
 
-TEST_F(ListTest, countElementsOnList)
+TEST_F(ListTest, getListLength)
 {
-    EXPECT_EQ(countElementsOnList(list), 0);
+    EXPECT_EQ(getListLength(list), 0);
     insertToFrontOfList(list, NULL);
-    EXPECT_EQ(countElementsOnList(list), 1);
+    EXPECT_EQ(getListLength(list), 1);
     insertToFrontOfList(list, NULL);
-    EXPECT_EQ(countElementsOnList(list), 2);
+    EXPECT_EQ(getListLength(list), 2);
     popFromFrontOfList(list);
-    EXPECT_EQ(countElementsOnList(list), 1);
+    EXPECT_EQ(getListLength(list), 1);
     popFromFrontOfList(list);
-    EXPECT_EQ(countElementsOnList(list), 0);
+    EXPECT_EQ(getListLength(list), 0);
 }
 
 TEST_F(ListTest, sortList)
@@ -254,6 +254,6 @@ TEST_F(ListTest, sortList_StressTest)
         return;
     }
 
-    destroyList(&list);
+    destroyList(list);
     list = createEmptyList();
 }

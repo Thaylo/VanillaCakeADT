@@ -3,7 +3,15 @@
 
 struct List{
     ListNode * first;
+    int length;
 };
+
+ListNode * sortedMerge(
+    ListNode* a, ListNode* b,
+    int (*sortComparison)(DataContainer *, DataContainer *, int usingAscendingOrder),
+    int usingAscendingOrder);
+
+void frontBackSplit(ListNode* source, ListNode** frontRef, ListNode** backRef);
 
 /*-----------------------------------------------------------------------------------------------*/
 List * createEmptyList()
@@ -13,6 +21,7 @@ List * createEmptyList()
     if (list != NULL)
     {
         list->first = NULL;
+        list->length = 0;
     }
 
     return list;
@@ -31,6 +40,7 @@ int insertToFrontOfList(List * list, DataContainer * dataContainer)
         {
             setNextListNode(listNode, list->first);
             list->first = listNode;
+            list->length++;
 
             return SUCCESS;
         }
@@ -87,6 +97,7 @@ void removeFromFrontOfList(List * list)
             destroyListNode(&list->first);
             
             list->first = secondListNode;
+            list->length--;
         }
     }
 }
@@ -111,6 +122,7 @@ DataContainer * popFromFrontOfList(List * list)
             free(list->first);
             
             list->first = secondListNode;
+            list->length--;
         }
     }
 
@@ -120,19 +132,13 @@ DataContainer * popFromFrontOfList(List * list)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-int countElementsOnList(List * list)
+int getListLength(List * list)
 {
     int count = 0;
 
     if (list != NULL)
     {
-        for (
-            ListNode * nodeIterator = list->first;
-            nodeIterator != NULL;
-            nodeIterator = getNextListNode(nodeIterator) )
-        {
-            count++;
-        }
+        count = list->length;
     }
 
     return count;
@@ -141,17 +147,10 @@ int countElementsOnList(List * list)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-ListNode * sortedMerge(
-    ListNode* a, ListNode* b,
-    int (*sortComparison)(DataContainer *, DataContainer *, int usingAscendingOrder),
-    int usingAscendingOrder);
-
-void frontBackSplit(ListNode* source, ListNode** frontRef, ListNode** backRef);
-
 /* sorts the linked list by changing next pointers (not data) */
 void MergeSort(
     ListNode ** headRef,
-    int (*sortComparison)(DataContainer *, DataContainer *, int usingAscendingOrder),
+    int (*sortComparison)(DataContainer *, DataContainer *, int),
     int usingAscendingOrder)
 {
     ListNode* head = *headRef;
@@ -250,8 +249,9 @@ void sortList(
 
 
 /*-----------------------------------------------------------------------------------------------*/
-void displayList(List * list)
+void displayListGenericPointer(void * listPointer, size_t unusedArgumentForSize)
 {
+    List * list = (List*) listPointer;
     int cnt = 0;
 
     printf("[");
@@ -264,7 +264,7 @@ void displayList(List * list)
             nodeIterator = getNextListNode(nodeIterator)
             )
         {
-            if (cnt <= 3 || cnt >= countElementsOnList(list) - 3)
+            if (cnt <= 3 || cnt >= getListLength(list) - 3)
             {
                 displayDataContainer(getDataFromListNode(nodeIterator));
             }
@@ -281,6 +281,13 @@ void displayList(List * list)
 
 }
 
+
+
+/*-----------------------------------------------------------------------------------------------*/
+void displayList(void * list)
+{
+    displayListGenericPointer(list, (size_t) sizeof(List));
+}
 
 
 /*-----------------------------------------------------------------------------------------------*/
@@ -319,7 +326,7 @@ int isListSorted(
 
     if (list != NULL)
     {
-        if(countElementsOnList(list) <= 1)
+        if(getListLength(list) <= 1)
         {
             return isSorted;
         }
@@ -347,18 +354,17 @@ int isListSorted(
 
 
 /*-----------------------------------------------------------------------------------------------*/
-void destroyList(List ** list)
+void destroyList(void * list)
 {
-    if (*list != NULL)
+    if (list != NULL)
     {
-        for (ListNode * node = (*list)->first; node != NULL; )
+        for (ListNode * node = ((List*) list)->first; node != NULL; )
         {
             ListNode * nextNode = getNextListNode(node);
             destroyListNode(&node);
             node = nextNode;
         }
 
-        free(*list);
-        *list = NULL;
+        free(list);
     }
 }
