@@ -138,6 +138,9 @@ int countElementsOnList(List * list)
     return count;
 }
 
+
+
+/*-----------------------------------------------------------------------------------------------*/
 ListNode * sortedMerge(
     ListNode* a, ListNode* b,
     int (*sortComparison)(DataContainer *, DataContainer *, int usingAscendingOrder),
@@ -169,9 +172,11 @@ void MergeSort(
      
     /* answer = merge the two sorted lists together */
     *headRef = sortedMerge(a, b, sortComparison, usingAscendingOrder);
-
 }
- 
+
+
+
+/*-----------------------------------------------------------------------------------------------*/
 ListNode * sortedMerge(
     ListNode* a, ListNode* b,
     int (*sortComparison)(DataContainer *, DataContainer *, int usingAscendingOrder),
@@ -199,7 +204,10 @@ ListNode * sortedMerge(
 
     return result;
 }
- 
+
+
+
+/*-----------------------------------------------------------------------------------------------*/
 /* UTILITY FUNCTIONS */
 /* Split the listNodes of the given list into front and back halves,
     and return the two lists using the reference parameters.
@@ -227,6 +235,7 @@ void frontBackSplit(ListNode* source, ListNode** frontRef, ListNode** backRef)
     *backRef = getNextListNode(slow);
     setNextListNode(slow, NULL);
 }
+
 
 
 /*-----------------------------------------------------------------------------------------------*/

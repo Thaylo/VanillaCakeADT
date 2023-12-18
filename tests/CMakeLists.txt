@@ -37,8 +37,10 @@ endif()
 # Link against the source files
 target_sources(unit_tests PRIVATE
     ${CMAKE_SOURCE_DIR}/src/DataContainer/DataContainer.c
-    ${CMAKE_SOURCE_DIR}/src/List/ListNode.c
     ${CMAKE_SOURCE_DIR}/src/List/List.c
-    
+    ${CMAKE_SOURCE_DIR}/src/List/ListNode.c
+    ${CMAKE_SOURCE_DIR}/src/BinaryTree/BinaryTree.c
+    ${CMAKE_SOURCE_DIR}/src/BinaryTree/BinaryTreeNode.c
+
     # Add other source files as needed
 )
