@@ -244,9 +244,7 @@ void sortList(
     int (*sortComparison)(DataContainer *, DataContainer *, int usingAscendingOrder),
     int usingAscendingOrder)
 {
-    ListNode * head = list->first;
-    MergeSort(&head, sortComparison, usingAscendingOrder);
-    list->first = head;
+    MergeSort(&list->first, sortComparison, usingAscendingOrder);
 }
 
 
