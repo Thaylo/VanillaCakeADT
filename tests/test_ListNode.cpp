@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 #include <stdlib.h>
 
-#include "../include/List/ListNode.h"
-#include "../include/DataContainer/DataContainer.h"
+#include "ListNode.h"
+#include "DataContainer.h"
 
 class ListNodeTest : public testing::Test
 {

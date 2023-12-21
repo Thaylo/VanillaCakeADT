@@ -2,8 +2,8 @@
 #define TEST_LIST_HELPERS_H
 
 #include <iostream>
-#include "../include/List/List.h"
-#include "../include/DataContainer/DataContainer.h"
+#include "List.h"
+#include "DataContainer.h"
 
 int populateListWithFloats(List * list, int numberOfElements, int isRandom);
 

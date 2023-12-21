@@ -1,4 +1,4 @@
-#include "List.h"
+#include "../List/List.h"
 #include <stdio.h>
 
 struct List{

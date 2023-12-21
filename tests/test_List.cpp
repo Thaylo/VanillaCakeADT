@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../include/List/List.h"
-#include "../include/DataContainer/DataContainer.h"
+#include "List.h"
+#include "DataContainer.h"
 
 #include "test_List_Helpers.h"
 

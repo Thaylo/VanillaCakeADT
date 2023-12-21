@@ -1,6 +1,6 @@
 #include "test_List_Helpers.h"
-#include "../include/List/List.h"
-#include "../include/DataContainer/DataContainer.h"
+#include "List.h"
+#include "DataContainer.h"
 
 int populateListWithFloats(List * list, int numberOfElements, int isRandom)
 {
