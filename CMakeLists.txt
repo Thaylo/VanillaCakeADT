@@ -11,8 +11,6 @@ set(CMAKE_C_STANDARD 99)
 set(SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/src/List/List.c
     ${CMAKE_SOURCE_DIR}/src/List/ListNode.c
-    ${CMAKE_SOURCE_DIR}/src/BinaryTree/BinaryTree.c
-    ${CMAKE_SOURCE_DIR}/src/BinaryTree/BinaryTreeNode.c
     ${CMAKE_SOURCE_DIR}/src/DataContainer/DataContainer.c
     # Add other source files as needed
 )
