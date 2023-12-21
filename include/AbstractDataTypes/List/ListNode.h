@@ -19,7 +19,7 @@ size_t getSizeOfListNodeInBytes(ListNode * listNode);
 
 DataContainer * getDataFromListNode(ListNode * listNode);
 
-void destroyListNode(ListNode ** listNode);
+void destroyListNode(void * listNode);
 
 #ifdef __cplusplus
 }

@@ -14,7 +14,7 @@ protected:
 
     void TearDown() override
     {
-        destroyListNode(&listNode);
+        destroyListNode(listNode);
     }
     
     DataContainer * dataContainer;

@@ -109,7 +109,7 @@ void clearDataContainerFromListNode(ListNode * listNode)
 {
     if(listNode != NULL)
     {
-        destroyDataContainer(&(listNode->dataContainer));
+        destroyDataContainer(listNode->dataContainer);
         listNode->dataContainer = NULL;
     }
 }
@@ -117,12 +117,8 @@ void clearDataContainerFromListNode(ListNode * listNode)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-void destroyListNode(ListNode ** listNode)
+void destroyListNode(void * listNode)
 {
-    if(*listNode != NULL)
-    {
-        clearDataContainerFromListNode(*listNode);
-        free(*listNode);
-        *listNode = NULL;
-    }
+    clearDataContainerFromListNode(listNode);
+    free(listNode);
 }

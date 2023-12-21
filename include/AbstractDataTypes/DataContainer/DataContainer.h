@@ -30,7 +30,7 @@ getDataOnDataContainer(
 
 void displayDataContainer(DataContainer * dataContainer);
 
-void destroyDataContainer(DataContainer ** dataContainer);
+void destroyDataContainer(void * dataContainer);
 
 void dataContainerDummyDisplay(void * data, size_t size);
 

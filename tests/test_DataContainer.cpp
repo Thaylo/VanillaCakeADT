@@ -25,7 +25,7 @@ protected:
     void TearDown() override
     {
         // Clean-up code that will be run after each test
-        destroyDataContainer(&dataContainer);
+        destroyDataContainer(dataContainer);
     }
 
     // Member variables accessible in the tests

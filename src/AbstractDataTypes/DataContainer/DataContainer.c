@@ -122,28 +122,26 @@ displayDataContainer(DataContainer * dataContainer)
 
 /*-----------------------------------------------------------------------------------------------*/
 void
-destroyDataContainer(DataContainer ** dataContainer)
+destroyDataContainer(void * dataContainer)
 {
-    clearDataOnDataContainer(*dataContainer);
-
-    if(*dataContainer != NULL)
-    {
-        free(*dataContainer);
-    }
-    
-    *dataContainer = NULL;
+    clearDataOnDataContainer(dataContainer);
+    free(dataContainer);
 }
 
 
 
 /*-----------------------------------------------------------------------------------------------*/
-void dataContainerDummyDisplay(void * data, size_t size)
+void
+dataContainerDummyDisplay(void * data, size_t size)
 {
 
 }
 
+
+
 /*-----------------------------------------------------------------------------------------------*/
-size_t getSizeOfDataContainerInBytes(DataContainer * dataContainer)
+size_t
+getSizeOfDataContainerInBytes(DataContainer * dataContainer)
 {
     size_t sizeInBytes = 0;
 

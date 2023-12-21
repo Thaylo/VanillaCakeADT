@@ -136,7 +136,7 @@ TEST_F(ListTest, popFromFrontOfList)
         // Verifies if List == {4.0, 3.0, 2.0, 1.0, 0.0}
         EXPECT_EQ(retrievedValue, (numberOfElements-i)-1);
 
-        destroyDataContainer(&dataContainer);
+        destroyDataContainer(dataContainer);
     }
 }
 

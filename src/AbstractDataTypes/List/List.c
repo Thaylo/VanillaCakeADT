@@ -94,7 +94,7 @@ void removeFromFrontOfList(List * list)
         {
             ListNode * secondListNode = getNextListNode(list->first);
 
-            destroyListNode(&list->first);
+            destroyListNode(list->first);
             
             list->first = secondListNode;
             list->length--;
@@ -176,6 +176,18 @@ void MergeSort(
 
 
 /*-----------------------------------------------------------------------------------------------*/
+/* sorts the linked list by changing next pointers (not data) */
+void iterativeMergeSort(
+    List * list,
+    int (*sortComparison)(DataContainer *, DataContainer *, int),
+    int usingAscendingOrder)
+{
+    ;
+}
+
+
+
+/*-----------------------------------------------------------------------------------------------*/
 ListNode * sortedMerge(
     ListNode* a, ListNode* b,
     int (*sortComparison)(DataContainer *, DataContainer *, int usingAscendingOrder),
@@ -243,7 +255,12 @@ void sortList(
     int (*sortComparison)(DataContainer *, DataContainer *, int usingAscendingOrder),
     int usingAscendingOrder)
 {
+    // #define TESTING_ITERATIVE_MERGE_SORT
+    #ifdef TESTING_ITERATIVE_MERGE_SORT
+    iterativeMergeSort(list, sortComparison, usingAscendingOrder);
+    #else
     MergeSort(&list->first, sortComparison, usingAscendingOrder);
+    #endif /* TESTING_ITERATIVE_MERGE_SORT */
 }
 
 
@@ -361,10 +378,9 @@ void destroyList(void * list)
         for (ListNode * node = ((List*) list)->first; node != NULL; )
         {
             ListNode * nextNode = getNextListNode(node);
-            destroyListNode(&node);
+            destroyListNode(node);
             node = nextNode;
         }
-
-        free(list);
     }
+    free(list);
 }

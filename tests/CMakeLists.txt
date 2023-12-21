@@ -5,6 +5,7 @@ set(TEST_FILES
     test_ListNode.cpp
     test_List.cpp
     test_List_Helpers.cpp
+    test_Stack.cpp
     # Add other test files as needed
 )
 
@@ -39,6 +40,7 @@ target_sources(unit_tests PRIVATE
     ${CMAKE_SOURCE_DIR}/src/AbstractDataTypes/DataContainer/DataContainer.c
     ${CMAKE_SOURCE_DIR}/src/AbstractDataTypes/List/List.c
     ${CMAKE_SOURCE_DIR}/src/AbstractDataTypes/List/ListNode.c
+    ${CMAKE_SOURCE_DIR}/src/AbstractDataTypes/Stack/Stack.c
 
     # Add other source files as needed
 )
