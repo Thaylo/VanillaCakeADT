@@ -222,9 +222,6 @@ List * consumeOneListFromTopOfStack(Stack * stack)
         list = (List*) currentList;
     }
 
-    //printf("Exibindo o que foi consumido: \n");
-    //displayList(list);
-
     return list;
 }
 

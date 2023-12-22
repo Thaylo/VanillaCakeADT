@@ -168,7 +168,6 @@ TEST_F(ListTest, sortList)
         printf("populateListWithFloatsDecreasing failed \n");
         return;
     }
-    displayList(list); printf("\n\n");
 
     sortList(&list, compareFloats, 1);
     isSorted = verifyIfListIsSorted(list, compareFloats, 1);
@@ -190,9 +189,7 @@ TEST_F(ListTest, sortList_ascendingOrder_StressTest)
     int diff;
 
     int i = 0;
-    std::cout << "Starting to populate list..." << std::endl;
     int status = populateListWithFloats(list, numberOfListElementsDuringStressTest, 1);
-    std::cout << "Finished populating list." << std::endl;
     int isSorted;
 
     if(status != SUCCESS)
@@ -202,10 +199,7 @@ TEST_F(ListTest, sortList_ascendingOrder_StressTest)
         return;
     }
 
-    std::cout << "Original List values:" << std::endl;
-    displayList(list);
 
-    std::cout << "Starting to sort..." << std::endl;
     #if defined(__linux__)
         clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
     #else
@@ -228,10 +222,6 @@ TEST_F(ListTest, sortList_ascendingOrder_StressTest)
     #endif
 
     size_t listSizeInBytes = getListSizeInBytes(list);
-    // std::cout << "List size during STRESS TEST: " <<  listSizeInBytes/((float)1024*1024) << "[MB], time to sort: " << diff << " [ms]" << std::endl;
-    std::cout << "Sorting finished." << std::endl;
-    std::cout << "List values ascending:" << std::endl;
-    displayList(list);
     isSorted = verifyIfListIsSorted(list, compareFloats, 1);
     EXPECT_EQ(isSorted, 1);
 }
@@ -284,10 +274,7 @@ TEST_F(ListTest, sortList_descendingOrder_StressTest)
         return;
     }
 
-    std::cout << "Original List values:" << std::endl;
-    displayList(list);
 
-    std::cout << "Starting to sort..." << std::endl;
     #if defined(__linux__)
         clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
     #else
@@ -309,10 +296,6 @@ TEST_F(ListTest, sortList_descendingOrder_StressTest)
     #endif
 
     size_t listSizeInBytes = getListSizeInBytes(list);
-    // std::cout << "List size during STRESS TEST: " <<  listSizeInBytes/((float)1024*1024) << "[MB], time to sort: " << diff << " [ms]" << std::endl;
-    std::cout << "Sorting finished." << std::endl;
-    std::cout << "List values descending:" << std::endl;
-    displayList(list);
     isSorted = verifyIfListIsSorted(list, compareFloats, 0);
     EXPECT_EQ(isSorted, 1);
 }
