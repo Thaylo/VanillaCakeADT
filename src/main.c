@@ -1,11 +1,24 @@
 #include <stdio.h>
-#include "List/ListNode.h"
-#include "DataObject/DataObject.h"
+#include <stdlib.h>
 
-int main() {
-    // Your main code here
+#include "List.h"
+#include "DataObject.h"
 
-    printf("Hello, VanillaCake!\n");
-
+int main()
+{
+    // open the file logo.txt and print it to the screen
+    FILE * file = fopen("adtAsciiArtLogo.txt", "r");
+    
+    if (file != NULL)
+    {
+        printf("\n\n");
+        int c;
+        while ((c = fgetc(file)) != EOF) {
+            printf("%c", c);
+        }
+        fclose(file);
+        printf("\n\n");
+    }
+    
     return 0;
 }
