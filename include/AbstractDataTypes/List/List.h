@@ -24,18 +24,26 @@ DataContainer * popFromFrontOfList(List * list);
 int getListLength(List * list);
 
 void sortList(
-    List * list,
+    List ** list,
     int (*sortComparison)(DataContainer *, DataContainer *, int usingAscendingOrder),
     int usingAscendingOrder);
+
+void displayListWithSizeT(void * listPointer, size_t unusedArgumentForSize);
 
 void displayList(void * listPointer);
 
 size_t getListSizeInBytes(List * list);
 
-int isListSorted(
+int getIsSortedStatus(List * list);
+
+void setIsSortedStatus(List * list, int status);
+
+int verifyIfListIsSorted(
     List * list,
     int (*sortComparison)(DataContainer *, DataContainer *, int usingAscendingOrder),
     int usingAscendingOrder);
+
+int splitListInTwoHalves(List ** list, List ** listA, List ** listB);
 
 void destroyList(void * list);
 

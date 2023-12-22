@@ -32,6 +32,8 @@ void displayDataContainer(DataContainer * dataContainer);
 
 void destroyDataContainer(void * dataContainer);
 
+void destroyDataContainerKeepingStoredData(void * dataContainer);
+
 void dataContainerDummyDisplay(void * data, size_t size);
 
 size_t getSizeOfDataContainerInBytes(DataContainer * dataContainer);

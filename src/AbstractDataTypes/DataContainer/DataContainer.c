@@ -132,6 +132,15 @@ destroyDataContainer(void * dataContainer)
 
 /*-----------------------------------------------------------------------------------------------*/
 void
+destroyDataContainerKeepingStoredData(void * dataContainer)
+{
+    free(dataContainer);
+}
+
+
+
+/*-----------------------------------------------------------------------------------------------*/
+void
 dataContainerDummyDisplay(void * data, size_t size)
 {
 

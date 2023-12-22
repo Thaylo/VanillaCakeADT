@@ -44,6 +44,7 @@ ListNode * encapsulateDataContainerOnListNode(DataContainer * dataContainer)
     if (listNode != NULL)
     {
         setDataOnListNode(listNode, dataContainer);
+        listNode->next = NULL;
     }
     return listNode;
 }
@@ -80,7 +81,11 @@ size_t getSizeOfListNodeInBytes(ListNode * listNode)
     size_t size = 0;
 
     size += sizeof(ListNode);
-    size += getSizeOfDataContainerInBytes(listNode->dataContainer);
+
+    if(listNode != NULL)
+    {
+        size += getSizeOfDataContainerInBytes(listNode->dataContainer);
+    }
     
     return size;
 }
@@ -111,6 +116,7 @@ void clearDataContainerFromListNode(ListNode * listNode)
     {
         destroyDataContainer(listNode->dataContainer);
         listNode->dataContainer = NULL;
+        listNode->next = NULL;
     }
 }
 
