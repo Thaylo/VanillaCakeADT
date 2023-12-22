@@ -104,7 +104,7 @@ int insertToBackOfList(List * list, DataContainer * dataContainer)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-DataContainer * elementAtList(List * list, int position)
+DataContainer * elementAtListIndex(List * list, int position)
 {
     DataContainer * element = NULL;
     int count = 0;
@@ -256,8 +256,8 @@ void iterativeSortedMerge(
     {
         while(getListLength(*listA) > 0 && getListLength(*listB) > 0)
         {
-            DataContainer * a = elementAtList(*listA, 0);
-            DataContainer * b = elementAtList(*listB, 0);
+            DataContainer * a = elementAtListIndex(*listA, 0);
+            DataContainer * b = elementAtListIndex(*listB, 0);
 
             if(sortComparison(a, b, usingAscendingOrder) <= 0)
             {

@@ -45,7 +45,7 @@ DataContainer * stackPeek(Stack * stack)
 
     if(stack != NULL)
     {
-        dataContainer = elementAtList(stack->list, indexOfFirstPosition);
+        dataContainer = elementAtListIndex(stack->list, indexOfFirstPosition);
     }
 
     return dataContainer;
