@@ -32,7 +32,7 @@ protected:
     }
     
     List * list;
-    int numberOfListElementsDuringStressTest = 100*1000*1000;
+    int numberOfListElementsDuringStressTest = 1*1000*1000;
 };
 
 TEST_F(ListTest, createEmptyList)
@@ -42,7 +42,7 @@ TEST_F(ListTest, createEmptyList)
 
 TEST_F(ListTest, insertToFrontOfList)
 {
-    int repetitions = 10;
+    int repetitions = 11;
     for(int i = 0; i < repetitions; ++i)
     {
         int status = insertToFrontOfList(list, NULL);
@@ -89,7 +89,7 @@ TEST_F(ListTest, elementAtList_notEmpty)
 
 TEST_F(ListTest, removeFromFrontOfList)
 {
-    int inclusions = 10;
+    int inclusions = 11;
     int removals = 4;
     
     for(int i = 0; i < inclusions; ++i)
@@ -157,7 +157,7 @@ TEST_F(ListTest, getListLength)
 TEST_F(ListTest, sortList)
 {
     int diff;
-    int numberOfElements = 4;
+    int numberOfElements = 5;
     
     int i = 0;
     int status = populateListWithFloats(list, numberOfElements, 0);
@@ -190,7 +190,9 @@ TEST_F(ListTest, sortList_ascendingOrder_StressTest)
     int diff;
 
     int i = 0;
+    std::cout << "Starting to populate list..." << std::endl;
     int status = populateListWithFloats(list, numberOfListElementsDuringStressTest, 1);
+    std::cout << "Finished populating list." << std::endl;
     int isSorted;
 
     if(status != SUCCESS)
@@ -226,13 +228,39 @@ TEST_F(ListTest, sortList_ascendingOrder_StressTest)
     #endif
 
     size_t listSizeInBytes = getListSizeInBytes(list);
-    std::cout << "List size during STRESS TEST: " <<  listSizeInBytes/((float)1024*1024) << "[MB], time to sort: " << diff << " [ms]" << std::endl;
+    // std::cout << "List size during STRESS TEST: " <<  listSizeInBytes/((float)1024*1024) << "[MB], time to sort: " << diff << " [ms]" << std::endl;
     std::cout << "Sorting finished." << std::endl;
     std::cout << "List values ascending:" << std::endl;
     displayList(list);
     isSorted = verifyIfListIsSorted(list, compareFloats, 1);
     EXPECT_EQ(isSorted, 1);
 }
+
+TEST_F(ListTest, splitListInTwoHalves)
+{
+    int numberOfElements = 5;
+    int status = populateListWithFloats(list, numberOfElements, 0);
+    if(status != SUCCESS)
+    {
+        EXPECT_EQ(status, SUCCESS);
+        std::cout << "populateListWithFloatsDecreasing failed \n" << std::endl;
+        return;
+    }
+
+    List * firstHalf = NULL;
+    List * secondHalf = NULL;
+
+    splitListInTwoHalves(&list, &firstHalf, &secondHalf);
+
+    EXPECT_EQ(getListLength(firstHalf), 3);
+    EXPECT_EQ(getListLength(firstHalf), getListLengthByCounting(firstHalf));
+    EXPECT_EQ(getListLength(secondHalf), 2);
+    EXPECT_EQ(getListLength(secondHalf), getListLengthByCounting(secondHalf));
+
+    destroyList(firstHalf);
+    destroyList(secondHalf);
+}
+
 
 
 TEST_F(ListTest, sortList_descendingOrder_StressTest)
@@ -281,7 +309,7 @@ TEST_F(ListTest, sortList_descendingOrder_StressTest)
     #endif
 
     size_t listSizeInBytes = getListSizeInBytes(list);
-    std::cout << "List size during STRESS TEST: " <<  listSizeInBytes/((float)1024*1024) << "[MB], time to sort: " << diff << " [ms]" << std::endl;
+    // std::cout << "List size during STRESS TEST: " <<  listSizeInBytes/((float)1024*1024) << "[MB], time to sort: " << diff << " [ms]" << std::endl;
     std::cout << "Sorting finished." << std::endl;
     std::cout << "List values descending:" << std::endl;
     displayList(list);

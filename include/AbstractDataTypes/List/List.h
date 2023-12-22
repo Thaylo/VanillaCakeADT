@@ -45,6 +45,8 @@ int verifyIfListIsSorted(
 
 int splitListInTwoHalves(List ** list, List ** listA, List ** listB);
 
+int getListLengthByCounting(List * list);
+
 void destroyList(void * list);
 
 #ifdef __cplusplus
