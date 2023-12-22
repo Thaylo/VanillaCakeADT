@@ -1,7 +1,7 @@
 #include "../List/ListNode.h"
 
 struct ListNode{
-    DataContainer * dataContainer;
+    DataObject * dataObject;
     ListNode * next;
 };
 
@@ -14,7 +14,7 @@ ListNode * createEmptyListNode()
 
     if (listNode != NULL)
     {
-        listNode->dataContainer = NULL;
+        listNode->dataObject = NULL;
         listNode->next = NULL;
     }
 
@@ -26,24 +26,24 @@ ListNode * createEmptyListNode()
 /*-----------------------------------------------------------------------------------------------*/
 void setDataOnListNode(
     ListNode * listNode,
-    DataContainer * dataContainer)
+    DataObject * dataObject)
 {
     if (listNode != NULL)
     {
-        listNode->dataContainer = dataContainer;
+        listNode->dataObject = dataObject;
     }
 }
 
 
 
 /*-----------------------------------------------------------------------------------------------*/
-ListNode * encapsulateDataContainerOnListNode(DataContainer * dataContainer)
+ListNode * encapsulateDataObjectOnListNode(DataObject * dataObject)
 {
     ListNode * listNode = createEmptyListNode();
 
     if (listNode != NULL)
     {
-        setDataOnListNode(listNode, dataContainer);
+        setDataOnListNode(listNode, dataObject);
         listNode->next = NULL;
     }
     return listNode;
@@ -84,38 +84,38 @@ size_t getSizeOfListNodeInBytes(ListNode * listNode)
 
     if(listNode != NULL)
     {
-        size += getSizeOfDataContainerInBytes(listNode->dataContainer);
+        size += getSizeOfDataObjectInBytes(listNode->dataObject);
     }
     
     return size;
 }
 
 /*-----------------------------------------------------------------------------------------------*/
-DataContainer * getDataFromListNode(ListNode * listNode)
+DataObject * getDataFromListNode(ListNode * listNode)
 {
-    DataContainer * dataContainer;
+    DataObject * dataObject;
 
     if(listNode != NULL)
     {
-        dataContainer = listNode->dataContainer;
+        dataObject = listNode->dataObject;
     }
     else
     {
-        dataContainer = NULL;
+        dataObject = NULL;
     }
 
-    return dataContainer;
+    return dataObject;
 }
 
 
 
 /*-----------------------------------------------------------------------------------------------*/
-void clearDataContainerFromListNode(ListNode * listNode)
+void clearDataObjectFromListNode(ListNode * listNode)
 {
     if(listNode != NULL)
     {
-        destroyDataContainer(listNode->dataContainer);
-        listNode->dataContainer = NULL;
+        destroyDataObject(listNode->dataObject);
+        listNode->dataObject = NULL;
         listNode->next = NULL;
     }
 }
@@ -125,6 +125,6 @@ void clearDataContainerFromListNode(ListNode * listNode)
 /*-----------------------------------------------------------------------------------------------*/
 void destroyListNode(void * listNode)
 {
-    clearDataContainerFromListNode(listNode);
+    clearDataObjectFromListNode(listNode);
     free(listNode);
 }

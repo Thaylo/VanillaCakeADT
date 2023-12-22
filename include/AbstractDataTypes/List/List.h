@@ -13,19 +13,19 @@ typedef struct List List;
 
 List * createEmptyList();
 
-int insertToFrontOfList(List * list, DataContainer * dataContainer);
+int insertToFrontOfList(List * list, DataObject * dataObject);
 
-DataContainer * elementAtListIndex(List * list, int position);
+DataObject * elementAtListIndex(List * list, int position);
 
 void removeFromFrontOfList(List * list);
 
-DataContainer * popFromFrontOfList(List * list);
+DataObject * popFromFrontOfList(List * list);
 
 int getListLength(List * list);
 
 void sortList(
     List ** list,
-    int (*sortComparison)(DataContainer *, DataContainer *, int usingAscendingOrder),
+    int (*sortComparison)(DataObject *, DataObject *, int usingAscendingOrder),
     int usingAscendingOrder);
 
 void displayListWithSizeT(void * listPointer, size_t unusedArgumentForSize);
@@ -40,7 +40,7 @@ void setIsSortedStatus(List * list, int status);
 
 int verifyIfListIsSorted(
     List * list,
-    int (*sortComparison)(DataContainer *, DataContainer *, int usingAscendingOrder),
+    int (*sortComparison)(DataObject *, DataObject *, int usingAscendingOrder),
     int usingAscendingOrder);
 
 int splitListInTwoHalves(List ** list, List ** listA, List ** listB);

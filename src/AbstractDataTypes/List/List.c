@@ -31,11 +31,11 @@ List * createEmptyList()
 
 
 /*-----------------------------------------------------------------------------------------------*/
-int insertToFrontOfList(List * list, DataContainer * dataContainer)
+int insertToFrontOfList(List * list, DataObject * dataObject)
 {
     if (list != NULL)
     {
-        ListNode * listNode = encapsulateDataContainerOnListNode(dataContainer);
+        ListNode * listNode = encapsulateDataObjectOnListNode(dataObject);
 
         if (listNode != NULL)
         {
@@ -68,11 +68,11 @@ int insertToFrontOfList(List * list, DataContainer * dataContainer)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-int insertToBackOfList(List * list, DataContainer * dataContainer)
+int insertToBackOfList(List * list, DataObject * dataObject)
 {
     if (list != NULL)
     {
-        ListNode * listNode = encapsulateDataContainerOnListNode(dataContainer);
+        ListNode * listNode = encapsulateDataObjectOnListNode(dataObject);
 
         if (listNode != NULL)
         {
@@ -104,9 +104,9 @@ int insertToBackOfList(List * list, DataContainer * dataContainer)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-DataContainer * elementAtListIndex(List * list, int position)
+DataObject * elementAtListIndex(List * list, int position)
 {
-    DataContainer * element = NULL;
+    DataObject * element = NULL;
     int count = 0;
 
     if (list != NULL)
@@ -133,7 +133,7 @@ DataContainer * elementAtListIndex(List * list, int position)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-// The data stored in the first element will be deleted by a DataContainer callback.
+// The data stored in the first element will be deleted by a DataObject callback.
 void removeFromFrontOfList(List * list)
 {
     if (list != NULL)
@@ -158,11 +158,11 @@ void removeFromFrontOfList(List * list)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-// The data stored in the first element WONT be deleted by a DataContainer callback.
-// ListNode that contains the DataContainer will be deallocated.
-DataContainer * popFromFrontOfList(List * list)
+// The data stored in the first element WONT be deleted by a DataObject callback.
+// ListNode that contains the DataObject will be deallocated.
+DataObject * popFromFrontOfList(List * list)
 {
-    DataContainer * dataContainer = NULL;
+    DataObject * dataObject = NULL;
 
     if (list != NULL)
     {
@@ -170,7 +170,7 @@ DataContainer * popFromFrontOfList(List * list)
         {
             ListNode * secondListNode = getNextListNode(list->first);
 
-            dataContainer = getDataFromListNode(list->first);
+            dataObject = getDataFromListNode(list->first);
 
             free(list->first);
             
@@ -184,7 +184,7 @@ DataContainer * popFromFrontOfList(List * list)
         }
     }
 
-    return dataContainer;
+    return dataObject;
 }
 
 
@@ -212,12 +212,12 @@ List * consumeOneListFromTopOfStack(Stack * stack)
     if(stack != NULL && getStackLength(stack) > 0)
     {
         void * currentList;
-        DataContainer * dataContainer;
+        DataObject * dataObject;
         size_t unused;
 
-        dataContainer = stackPop(stack);
-        getDataOnDataContainer(dataContainer, &currentList, &unused);
-        destroyDataContainerKeepingStoredData(dataContainer);
+        dataObject = stackPop(stack);
+        getDataOnDataObject(dataObject, &currentList, &unused);
+        destroyDataObjectKeepingStoredData(dataObject);
         
         list = (List*) currentList;
     }
@@ -232,12 +232,12 @@ void storeListOnTopOfStack(Stack * stack, List * list)
 {
     if(stack != NULL && list != NULL)
     {
-        DataContainer * dataContainer =
-            encapsulateDataOnDataContainer(
+        DataObject * dataObject =
+            encapsulateDataOnDataObject(
                 list, sizeof(List), destroyList, displayListWithSizeT
             );
 
-        stackPush(stack, dataContainer);
+        stackPush(stack, dataObject);
     }
 }
 
@@ -246,15 +246,15 @@ void storeListOnTopOfStack(Stack * stack, List * list)
 /*-----------------------------------------------------------------------------------------------*/
 void iterativeSortedMerge(
     List ** mergedList, List ** listA, List ** listB,
-    int (*sortComparison)(DataContainer *, DataContainer *, int),
+    int (*sortComparison)(DataObject *, DataObject *, int),
     int usingAscendingOrder)
 {
     if(*mergedList != NULL && *listA != NULL && *listB != NULL)
     {
         while(getListLength(*listA) > 0 && getListLength(*listB) > 0)
         {
-            DataContainer * a = elementAtListIndex(*listA, 0);
-            DataContainer * b = elementAtListIndex(*listB, 0);
+            DataObject * a = elementAtListIndex(*listA, 0);
+            DataObject * b = elementAtListIndex(*listB, 0);
 
             if(sortComparison(a, b, usingAscendingOrder) <= 0)
             {
@@ -318,7 +318,7 @@ void appendListToEndOfList(List * destination, List * source)
 /* sorts the linked list by changing next pointers (not data) */
 void iterativeMergeSort(
     List ** listRef,
-    int (*sortComparison)(DataContainer *, DataContainer *, int),
+    int (*sortComparison)(DataObject *, DataObject *, int),
     int usingAscendingOrder)
 {
     List * list = *listRef;
@@ -390,7 +390,7 @@ void iterativeMergeSort(
 /*-----------------------------------------------------------------------------------------------*/
 void sortList(
     List ** list,
-    int (*sortComparison)(DataContainer *, DataContainer *, int usingAscendingOrder),
+    int (*sortComparison)(DataObject *, DataObject *, int usingAscendingOrder),
     int usingAscendingOrder)
 {
     iterativeMergeSort(list, sortComparison, usingAscendingOrder);
@@ -416,7 +416,7 @@ void displayListWithSizeT(void * listPointer, size_t unusedArgumentForSize)
         {
             if (cnt <= 3)
             {
-                displayDataContainer(getDataFromListNode(nodeIterator));
+                displayDataObject(getDataFromListNode(nodeIterator));
             }
             else if(cnt == 4)
             {
@@ -425,7 +425,7 @@ void displayListWithSizeT(void * listPointer, size_t unusedArgumentForSize)
             }
             cnt++;
         }
-        displayDataContainer(getDataFromListNode(list->last));
+        displayDataObject(getDataFromListNode(list->last));
     }
 
     printf("]\n");
@@ -501,7 +501,7 @@ first argument is considered to be respectively less than, equal to, or greater 
 */
 int verifyIfListIsSorted(
     List * list,
-    int (*sortComparison)(DataContainer *, DataContainer *, int usingAscendingOrder),
+    int (*sortComparison)(DataObject *, DataObject *, int usingAscendingOrder),
     int usingAscendingOrder)
 {
     int isSorted = 1;

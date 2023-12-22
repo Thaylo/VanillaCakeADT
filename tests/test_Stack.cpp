@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 #include "Stack.h"
-#include "DataContainer.h"
+#include "DataObject.h"
 
 class StackTest : public testing::Test
 {
@@ -30,11 +30,11 @@ TEST_F(StackTest, stackCreate)
 
 TEST_F(StackTest, stackPush)
 {
-    DataContainer * d1 =
-            encapsulateDataOnDataContainer(malloc(sizeof(int)), (size_t) 0, free, NULL);
+    DataObject * d1 =
+            encapsulateDataOnDataObject(malloc(sizeof(int)), (size_t) 0, free, NULL);
 
-    DataContainer * d2 =
-            encapsulateDataOnDataContainer(malloc(sizeof(int)), (size_t) 0, free, NULL);
+    DataObject * d2 =
+            encapsulateDataOnDataObject(malloc(sizeof(int)), (size_t) 0, free, NULL);
 
     stackPush(stack, d1);
     EXPECT_EQ(getStackLength(stack), 1);
@@ -45,50 +45,50 @@ TEST_F(StackTest, stackPush)
 
 TEST_F(StackTest, stackPop)
 {
-    DataContainer * d1 =
-            encapsulateDataOnDataContainer(malloc(sizeof(int)), (size_t) 0, free, NULL);
+    DataObject * d1 =
+            encapsulateDataOnDataObject(malloc(sizeof(int)), (size_t) 0, free, NULL);
 
-    DataContainer * d2 =
-            encapsulateDataOnDataContainer(malloc(sizeof(int)), (size_t) 0, free, NULL);
+    DataObject * d2 =
+            encapsulateDataOnDataObject(malloc(sizeof(int)), (size_t) 0, free, NULL);
 
     stackPush(stack, d1);
     stackPush(stack, d2);
-    DataContainer * d2Recovered = stackPop(stack);
+    DataObject * d2Recovered = stackPop(stack);
     EXPECT_NE(d2Recovered, nullptr);
 
-    DataContainer * d1Recovered = stackPop(stack);
+    DataObject * d1Recovered = stackPop(stack);
     EXPECT_NE(d1Recovered, nullptr);
 
-    destroyDataContainer(d1);
-    destroyDataContainer(d2);
+    destroyDataObject(d1);
+    destroyDataObject(d2);
 }
 
 TEST_F(StackTest, stackPeek)
 {
-    DataContainer * d1 =
-            encapsulateDataOnDataContainer(malloc(sizeof(int)), (size_t) 0, free, NULL);
+    DataObject * d1 =
+            encapsulateDataOnDataObject(malloc(sizeof(int)), (size_t) 0, free, NULL);
 
-    DataContainer * d2 =
-            encapsulateDataOnDataContainer(malloc(sizeof(int)), (size_t) 0, free, NULL);
+    DataObject * d2 =
+            encapsulateDataOnDataObject(malloc(sizeof(int)), (size_t) 0, free, NULL);
 
     stackPush(stack, d1);
     stackPush(stack, d2);
     EXPECT_EQ(stackPeek(stack), d2);
 
-    DataContainer * d2Recovered = stackPop(stack);
+    DataObject * d2Recovered = stackPop(stack);
 
     EXPECT_EQ(stackPeek(stack), d1);
 
-    destroyDataContainer(d2Recovered);
+    destroyDataObject(d2Recovered);
 }
 
 TEST_F(StackTest, getStackLength)
 {
-    DataContainer * d1 =
-            encapsulateDataOnDataContainer(malloc(sizeof(int)), (size_t) 0, free, NULL);
+    DataObject * d1 =
+            encapsulateDataOnDataObject(malloc(sizeof(int)), (size_t) 0, free, NULL);
 
-    DataContainer * d2 =
-            encapsulateDataOnDataContainer(malloc(sizeof(int)), (size_t) 0, free, NULL);
+    DataObject * d2 =
+            encapsulateDataOnDataObject(malloc(sizeof(int)), (size_t) 0, free, NULL);
 
     stackPush(stack, d1);
     stackPush(stack, d2);
@@ -100,8 +100,8 @@ TEST_F(StackTest, getStackLength)
     stackPop(stack);
     EXPECT_EQ(getStackLength(stack), 0);
 
-    destroyDataContainer(d1);
-    destroyDataContainer(d2);
+    destroyDataObject(d1);
+    destroyDataObject(d2);
 }
 
 
@@ -110,11 +110,11 @@ TEST_F(StackTest, getStackLength)
 // TODO: for memory safety, consider implementing "destroyAndSetToNull" functions
 TEST_F(StackTest, destroyStack)
 {
-    DataContainer * d1 =
-            encapsulateDataOnDataContainer(malloc(sizeof(int)), (size_t) 0, free, NULL);
+    DataObject * d1 =
+            encapsulateDataOnDataObject(malloc(sizeof(int)), (size_t) 0, free, NULL);
 
-    DataContainer * d2 =
-            encapsulateDataOnDataContainer(malloc(sizeof(int)), (size_t) 0, free, NULL);
+    DataObject * d2 =
+            encapsulateDataOnDataObject(malloc(sizeof(int)), (size_t) 0, free, NULL);
 
     stackPush(stack, d1);
     stackPush(stack, d2);

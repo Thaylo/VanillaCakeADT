@@ -18,7 +18,7 @@ Stack * stackCreate(void)
     return stack;
 }
 
-void stackPush(Stack * stack, DataContainer * data)
+void stackPush(Stack * stack, DataObject * data)
 {
     if(stack != NULL && data != NULL)
     {
@@ -26,9 +26,9 @@ void stackPush(Stack * stack, DataContainer * data)
     }
 }
 
-DataContainer * stackPop(Stack * stack)
+DataObject * stackPop(Stack * stack)
 {
-    DataContainer * dataContainer = NULL;
+    DataObject * dataContainer = NULL;
 
     if(stack != NULL)
     {
@@ -38,9 +38,9 @@ DataContainer * stackPop(Stack * stack)
     return dataContainer;
 }
 
-DataContainer * stackPeek(Stack * stack)
+DataObject * stackPeek(Stack * stack)
 {
-    DataContainer * dataContainer = NULL;
+    DataObject * dataContainer = NULL;
     int indexOfFirstPosition = 0;
 
     if(stack != NULL)

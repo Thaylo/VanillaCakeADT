@@ -11,7 +11,7 @@ set(CMAKE_C_STANDARD 99)
 set(SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/src/AbstractDataTypes/List/List.c
     ${CMAKE_SOURCE_DIR}/src/AbstractDataTypes/List/ListNode.c
-    ${CMAKE_SOURCE_DIR}/src/AbstractDataTypes/DataContainer/DataContainer.c
+    ${CMAKE_SOURCE_DIR}/src/AbstractDataTypes/DataObject/DataObject.c
     ${CMAKE_SOURCE_DIR}/src/AbstractDataTypes/Stack/Stack.c
     # Add other source files as needed
 )
@@ -24,7 +24,7 @@ target_include_directories(VanillaCakeLib
     PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/include/AbstractDataTypes
-    ${CMAKE_SOURCE_DIR}/include/AbstractDataTypes/DataContainer
+    ${CMAKE_SOURCE_DIR}/include/AbstractDataTypes/DataObject
     ${CMAKE_SOURCE_DIR}/include/AbstractDataTypes/List
     ${CMAKE_SOURCE_DIR}/include/AbstractDataTypes/Stack
     # Add other subdirectories as needed

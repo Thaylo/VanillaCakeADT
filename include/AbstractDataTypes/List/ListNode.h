@@ -5,11 +5,11 @@
 extern "C" {
 #endif
 
-#include "DataContainer.h"
+#include "DataObject.h"
 
 typedef struct ListNode ListNode;
 
-ListNode * encapsulateDataContainerOnListNode(DataContainer * dataContainer);
+ListNode * encapsulateDataObjectOnListNode(DataObject * dataObject);
 
 ListNode * getNextListNode(ListNode * listNode);
 
@@ -17,7 +17,7 @@ void setNextListNode(ListNode * listNode, ListNode * nextListNode);
 
 size_t getSizeOfListNodeInBytes(ListNode * listNode);
 
-DataContainer * getDataFromListNode(ListNode * listNode);
+DataObject * getDataFromListNode(ListNode * listNode);
 
 void destroyListNode(void * listNode);
 

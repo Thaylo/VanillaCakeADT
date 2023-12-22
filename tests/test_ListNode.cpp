@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "ListNode.h"
-#include "DataContainer.h"
+#include "DataObject.h"
 
 class ListNodeTest : public testing::Test
 {
@@ -17,32 +17,32 @@ protected:
         destroyListNode(listNode);
     }
     
-    DataContainer * dataContainer;
+    DataObject * dataObject;
     ListNode * listNode;
 };
 
 
-TEST_F(ListNodeTest, ListNodeEncapsulationOfDataContainer_nullData)
+TEST_F(ListNodeTest, ListNodeEncapsulationOfDataObject_nullData)
 {
-    dataContainer = encapsulateDataOnDataContainer(nullptr, 0, free, dataContainerDummyDisplay);
-    listNode = encapsulateDataContainerOnListNode(dataContainer);
-    DataContainer * retrievedDataContainer = getDataFromListNode(listNode);
-    EXPECT_EQ(dataContainer, retrievedDataContainer);
+    dataObject = encapsulateDataOnDataObject(nullptr, 0, free, dataObjectDummyDisplay);
+    listNode = encapsulateDataObjectOnListNode(dataObject);
+    DataObject * retrievedDataObject = getDataFromListNode(listNode);
+    EXPECT_EQ(dataObject, retrievedDataObject);
 
-    void * retrievedInternalDataFromDataContainer;
-    size_t retrievedInternalDataSizeFromDataContainer;
+    void * retrievedInternalDataFromDataObject;
+    size_t retrievedInternalDataSizeFromDataObject;
 
-    getDataOnDataContainer(
-        retrievedDataContainer,
-        &retrievedInternalDataFromDataContainer,
-        &retrievedInternalDataSizeFromDataContainer);
+    getDataOnDataObject(
+        retrievedDataObject,
+        &retrievedInternalDataFromDataObject,
+        &retrievedInternalDataSizeFromDataObject);
 
-    EXPECT_EQ(retrievedInternalDataFromDataContainer, nullptr);
-    EXPECT_EQ(retrievedInternalDataSizeFromDataContainer, 0);
+    EXPECT_EQ(retrievedInternalDataFromDataObject, nullptr);
+    EXPECT_EQ(retrievedInternalDataSizeFromDataObject, 0);
 }
 
 
-TEST_F(ListNodeTest, ListNodeEncapsulationOfDataContainer_notNullData)
+TEST_F(ListNodeTest, ListNodeEncapsulationOfDataObject_notNullData)
 {
     size_t integerArraySize = 3;
     int expectedArrayContent[3] = {1,2,1024*1024};
@@ -54,8 +54,8 @@ TEST_F(ListNodeTest, ListNodeEncapsulationOfDataContainer_notNullData)
         integerArray[i] = expectedArrayContent[i];
     }
 
-    dataContainer = encapsulateDataOnDataContainer(integerArray, integerArraySize, free, dataContainerDummyDisplay);
-    listNode = encapsulateDataContainerOnListNode(dataContainer);
-    DataContainer * retrievedDataContainer = getDataFromListNode(listNode);
-    EXPECT_EQ(dataContainer, retrievedDataContainer);
+    dataObject = encapsulateDataOnDataObject(integerArray, integerArraySize, free, dataObjectDummyDisplay);
+    listNode = encapsulateDataObjectOnListNode(dataObject);
+    DataObject * retrievedDataObject = getDataFromListNode(listNode);
+    EXPECT_EQ(dataObject, retrievedDataObject);
 }

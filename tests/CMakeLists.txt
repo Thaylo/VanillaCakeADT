@@ -1,7 +1,7 @@
 # Add your test source files
 set(TEST_FILES
     test_main.cpp
-    test_DataContainer.cpp
+    test_DataObject.cpp
     test_ListNode.cpp
     test_List.cpp
     test_List_Helpers.cpp
@@ -37,7 +37,7 @@ endif()
 
 # Link against the source files
 target_sources(unit_tests PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/AbstractDataTypes/DataContainer/DataContainer.c
+    ${CMAKE_SOURCE_DIR}/src/AbstractDataTypes/DataObject/DataObject.c
     ${CMAKE_SOURCE_DIR}/src/AbstractDataTypes/List/List.c
     ${CMAKE_SOURCE_DIR}/src/AbstractDataTypes/List/ListNode.c
     ${CMAKE_SOURCE_DIR}/src/AbstractDataTypes/Stack/Stack.c

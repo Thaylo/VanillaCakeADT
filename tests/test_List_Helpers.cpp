@@ -1,6 +1,6 @@
 #include "test_List_Helpers.h"
 #include "List.h"
-#include "DataContainer.h"
+#include "DataObject.h"
 
 int populateListWithFloats(List * list, int numberOfElements, int isRandom)
 {
@@ -24,18 +24,18 @@ int populateListWithFloats(List * list, int numberOfElements, int isRandom)
             *data = rand();
         }
 
-        DataContainer * dataContainer = encapsulateDataOnDataContainer(
+        DataObject * dataObject = encapsulateDataOnDataObject(
             (void*) data,
             sizeof(float),
             free,
             testHelper_floatPointerDisplayFunction);
         
-        if(dataContainer == NULL)
+        if(dataObject == NULL)
         {
             status = MALLOC_ERROR;
             break;
         }
-        insertToFrontOfList(list, dataContainer);
+        insertToFrontOfList(list, dataObject);
     }
 
     return status;
@@ -47,8 +47,8 @@ void testHelper_floatPointerDisplayFunction(void * data, size_t size)
 }
 
 int compareFloats(
-    DataContainer * dataContainer1,
-    DataContainer * dataContainer2,
+    DataObject * dataObject1,
+    DataObject * dataObject2,
     int usingAscendingOrder)
 {
     void *data1, *data2;
@@ -56,8 +56,8 @@ int compareFloats(
 
     int result = 0;
 
-    getDataOnDataContainer(dataContainer1, &data1, &dummySize);
-    getDataOnDataContainer(dataContainer2, &data2, &dummySize);
+    getDataOnDataObject(dataObject1, &data1, &dummySize);
+    getDataOnDataObject(dataObject2, &data2, &dummySize);
 
     if (data1 == NULL || data2 == NULL)
     {

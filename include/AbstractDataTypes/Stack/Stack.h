@@ -6,17 +6,17 @@ extern "C" {
 #endif
 
 
-#include "DataContainer.h"
+#include "DataObject.h"
 
 typedef struct Stack Stack;
 
 Stack * stackCreate(void);
 
-void stackPush(Stack * stack, DataContainer * data);
+void stackPush(Stack * stack, DataObject * data);
 
-DataContainer * stackPop(Stack * stack);
+DataObject * stackPop(Stack * stack);
 
-DataContainer * stackPeek(Stack * stack);
+DataObject * stackPeek(Stack * stack);
 
 int getStackLength(Stack * stack);
 

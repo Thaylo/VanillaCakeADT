@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <stdlib.h>
 
-#include "DataContainer.h"
+#include "DataObject.h"
 
 
 
@@ -14,7 +14,7 @@ void displayIntegerArray(void * integerArray, size_t numberOfElements)
     printf("\n");
 }
 
-class DataContainerTest : public testing::Test
+class DataObjectTest : public testing::Test
 {
 protected:
     void SetUp() override
@@ -25,18 +25,18 @@ protected:
     void TearDown() override
     {
         // Clean-up code that will be run after each test
-        destroyDataContainer(dataContainer);
+        destroyDataObject(dataObject);
     }
 
     // Member variables accessible in the tests
-    DataContainer *dataContainer;
+    DataObject *dataObject;
     size_t integerArraySize = 3;
     int expectedArrayContent[3] = {1,2,3};
     int * integerArray;
 };
 
-// Test case for data store and retrieval on data container
-TEST_F(DataContainerTest, ContainerStoreAndRetrieval)
+// Test case for data store and retrieval on data object
+TEST_F(DataObjectTest, ObjectStoreAndRetrieval)
 {
     size_t integerArraySize = 3;
     int expectedArrayContent[3] = {1,2,1024*1024};
@@ -48,20 +48,20 @@ TEST_F(DataContainerTest, ContainerStoreAndRetrieval)
         integerArray[i] = expectedArrayContent[i];
     }
 
-    dataContainer = encapsulateDataOnDataContainer(integerArray, integerArraySize, free, dataContainerDummyDisplay);
+    dataObject = encapsulateDataOnDataObject(integerArray, integerArraySize, free, dataObjectDummyDisplay);
 
-    int * retrievedInternalDataFromDataContainer;
-    size_t retrievedInternalDataSizeFromDataContainer;
+    int * retrievedInternalDataFromDataObject;
+    size_t retrievedInternalDataSizeFromDataObject;
 
-    getDataOnDataContainer(
-        dataContainer,
-        (void**) &retrievedInternalDataFromDataContainer,
-        &retrievedInternalDataSizeFromDataContainer);
+    getDataOnDataObject(
+        dataObject,
+        (void**) &retrievedInternalDataFromDataObject,
+        &retrievedInternalDataSizeFromDataObject);
 
-        EXPECT_EQ(retrievedInternalDataFromDataContainer, integerArray);
-        EXPECT_EQ(retrievedInternalDataSizeFromDataContainer, integerArraySize);
+        EXPECT_EQ(retrievedInternalDataFromDataObject, integerArray);
+        EXPECT_EQ(retrievedInternalDataSizeFromDataObject, integerArraySize);
         for(int i = 0; i < integerArraySize; ++i)
         {
-            EXPECT_EQ(retrievedInternalDataFromDataContainer[i], integerArray[i]);
+            EXPECT_EQ(retrievedInternalDataFromDataObject[i], integerArray[i]);
         }
 }

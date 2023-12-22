@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 #include "List.h"
-#include "DataContainer.h"
+#include "DataObject.h"
 
 #include "test_List_Helpers.h"
 
@@ -53,18 +53,18 @@ TEST_F(ListTest, insertToFrontOfList)
 
 TEST_F(ListTest, elementAtList_empty)
 {
-    EXPECT_EQ(elementAtListIndex(list, -1), (DataContainer *) NULL);
-    EXPECT_EQ(elementAtListIndex(list, 0), (DataContainer *) NULL);
-    EXPECT_EQ(elementAtListIndex(list, 1), (DataContainer *) NULL);
-    EXPECT_EQ(elementAtListIndex(list, 10), (DataContainer *) NULL);
+    EXPECT_EQ(elementAtListIndex(list, -1), (DataObject *) NULL);
+    EXPECT_EQ(elementAtListIndex(list, 0), (DataObject *) NULL);
+    EXPECT_EQ(elementAtListIndex(list, 1), (DataObject *) NULL);
+    EXPECT_EQ(elementAtListIndex(list, 10), (DataObject *) NULL);
 }
 
 TEST_F(ListTest, elementAtList_nullList)
 {
-    EXPECT_EQ(elementAtListIndex(NULL, -1), (DataContainer *) NULL);
-    EXPECT_EQ(elementAtListIndex(NULL, 0), (DataContainer *) NULL);
-    EXPECT_EQ(elementAtListIndex(NULL, 1), (DataContainer *) NULL);
-    EXPECT_EQ(elementAtListIndex(NULL, 10), (DataContainer *) NULL);
+    EXPECT_EQ(elementAtListIndex(NULL, -1), (DataObject *) NULL);
+    EXPECT_EQ(elementAtListIndex(NULL, 0), (DataObject *) NULL);
+    EXPECT_EQ(elementAtListIndex(NULL, 1), (DataObject *) NULL);
+    EXPECT_EQ(elementAtListIndex(NULL, 10), (DataObject *) NULL);
 }
 
 TEST_F(ListTest, elementAtList_notEmpty)
@@ -72,19 +72,19 @@ TEST_F(ListTest, elementAtList_notEmpty)
     int numberOfElements = 5;
     populateListWithFloats(list, numberOfElements, 0);
     
-    EXPECT_EQ(elementAtListIndex(list, -1), (DataContainer *) NULL);
+    EXPECT_EQ(elementAtListIndex(list, -1), (DataObject *) NULL);
     for(int i = 0; i < numberOfElements; ++i)
     {
-        void * dataContainerData;
-        size_t dataContainerSize;
+        void * dataObjectData;
+        size_t dataObjectSize;
 
-        getDataOnDataContainer(elementAtListIndex(list, i), &dataContainerData, &dataContainerSize);
+        getDataOnDataObject(elementAtListIndex(list, i), &dataObjectData, &dataObjectSize);
         
         // Verifying against the sequence of values: 4.0, 3.0, 2.0, 1.0, 0.0
-        EXPECT_EQ(*(float*) dataContainerData, numberOfElements - (i + 1));
+        EXPECT_EQ(*(float*) dataObjectData, numberOfElements - (i + 1));
     }
 
-    EXPECT_EQ(elementAtListIndex(list, numberOfElements), (DataContainer *) NULL);
+    EXPECT_EQ(elementAtListIndex(list, numberOfElements), (DataObject *) NULL);
 }
 
 TEST_F(ListTest, removeFromFrontOfList)
@@ -123,21 +123,21 @@ TEST_F(ListTest, popFromFrontOfList)
 
     for(int i = 0; i < numberOfElements; ++i)
     {
-        DataContainer * dataContainer = popFromFrontOfList(list);
+        DataObject * dataObject = popFromFrontOfList(list);
 
         EXPECT_EQ(getListLength(list), numberOfElements-(i+1));
 
         float * retrievedPointerValue;
         size_t retrievedValueSize;
 
-        getDataOnDataContainer(dataContainer, (void**) &retrievedPointerValue, &retrievedValueSize);
+        getDataOnDataObject(dataObject, (void**) &retrievedPointerValue, &retrievedValueSize);
 
         float retrievedValue = *retrievedPointerValue;
         
         // Verifies if List == {4.0, 3.0, 2.0, 1.0, 0.0}
         EXPECT_EQ(retrievedValue, (numberOfElements-i)-1);
 
-        destroyDataContainer(dataContainer);
+        destroyDataObject(dataObject);
     }
 }
 
