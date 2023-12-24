@@ -29,8 +29,18 @@ vectorCreate()
 void
 vectorInitialize(Vector * vector, int maxCapacity)
 {
-    vector->maxCapacity = maxCapacity;
-    vector->array = dataObjectCreatePointerArray(maxCapacity);
+    if(vector != NULL)
+    {
+        vector->maxCapacity = maxCapacity;
+        if(maxCapacity != 0)
+        {
+            vector->array = dataObjectCreatePointerArray(maxCapacity);
+        }
+        else
+        {
+            vector->array = NULL;
+        }
+    }
 }
 
 
@@ -67,7 +77,7 @@ vectorPopBack(Vector * vector)
 DataObject *
 vectorPeekElementAtPositionIndex(Vector * vector, int index)
 {
-    if(vector != NULL && vector->array != NULL && vector->length > 0)
+    if(vector != NULL && vector->array != NULL && vector->length > 0 && index < vector->length)
     {
         return vector->array[index];
     }
@@ -100,7 +110,14 @@ vectorSwapElementsAtPositionIndexes(Vector * vector, int index1, int index2)
 int
 vectorGetMaxCapacity(Vector * vector)
 {
-    return vector->maxCapacity;
+    if(vector != NULL && vector->array != NULL)
+    {
+        return vector->maxCapacity;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 
@@ -109,7 +126,14 @@ vectorGetMaxCapacity(Vector * vector)
 int
 vectorGetLength(Vector * vector)
 {
-    return vector->length;
+    if(vector != NULL && vector->array != NULL)
+    {
+        return vector->length;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 
@@ -118,7 +142,14 @@ vectorGetLength(Vector * vector)
 DataObject **
 vectorGetObjectArrayPointer(Vector * vector)
 {
-    return vector->array;
+    if(vector != NULL)
+    {
+        return vector->array;
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 
@@ -141,7 +172,7 @@ vectorDisplay(void * vectorPointer)
 
     printf("[");
 
-    if (vector != NULL)
+    if (vector != NULL && vector->array != NULL)
     {
         for (int i = 0; i < vector->length; i++)
         {
@@ -157,9 +188,7 @@ vectorDisplay(void * vectorPointer)
             cnt++;
         }
     }
-
     printf("]\n");
-
 }
 
 
