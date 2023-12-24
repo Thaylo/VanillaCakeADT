@@ -138,7 +138,7 @@ listElementAtIndexPosition(List * list, int position)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-// The wrappedData stored in the first element will be deleted by a DataObject callback.
+// The DataObject stored in the first element will be deleted by its DataObject callback.
 void
 listDeleteFromFrontOf(List * list)
 {
@@ -164,7 +164,7 @@ listDeleteFromFrontOf(List * list)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-// The wrappedData stored in the first element WONT be deleted by a DataObject callback.
+// The DataObject stored in the first element WONT be deleted by its DataObject callback.
 // ListNode that contains the DataObject will be deallocated.
 DataObject *
 listPopFromFrontOf(List * list)
