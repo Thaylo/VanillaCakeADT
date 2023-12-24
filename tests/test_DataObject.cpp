@@ -25,7 +25,7 @@ protected:
     void TearDown() override
     {
         // Clean-up code that will be run after each test
-        destroyDataObject(dataObject);
+        dataObjectDestroy(dataObject);
     }
 
     // Member variables accessible in the tests
@@ -48,12 +48,12 @@ TEST_F(DataObjectTest, ObjectStoreAndRetrieval)
         integerArray[i] = expectedArrayContent[i];
     }
 
-    dataObject = encapsulateDataOnDataObject(integerArray, integerArraySize, free, dataObjectDummyDisplay);
+    dataObject = dataObjectWrapData(integerArray, integerArraySize, free, dataObjectDummyDisplay);
 
     int * retrievedInternalDataFromDataObject;
     size_t retrievedInternalDataSizeFromDataObject;
 
-    getDataOnDataObject(
+    dataObjectGetWrappedData(
         dataObject,
         (void**) &retrievedInternalDataFromDataObject,
         &retrievedInternalDataSizeFromDataObject);

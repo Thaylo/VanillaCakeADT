@@ -8,7 +8,8 @@ struct ListNode{
 
 
 /*-----------------------------------------------------------------------------------------------*/
-ListNode * createEmptyListNode()
+ListNode *
+listNodeCreate()
 {
     ListNode * listNode = (ListNode *) malloc(sizeof(ListNode));
 
@@ -24,7 +25,8 @@ ListNode * createEmptyListNode()
 
 
 /*-----------------------------------------------------------------------------------------------*/
-void setDataOnListNode(
+void
+listNodeSetDataObject(
     ListNode * listNode,
     DataObject * dataObject)
 {
@@ -37,13 +39,14 @@ void setDataOnListNode(
 
 
 /*-----------------------------------------------------------------------------------------------*/
-ListNode * encapsulateDataObjectOnListNode(DataObject * dataObject)
+ListNode *
+listNodeWrapDataObject(DataObject * dataObject)
 {
-    ListNode * listNode = createEmptyListNode();
+    ListNode * listNode = listNodeCreate();
 
     if (listNode != NULL)
     {
-        setDataOnListNode(listNode, dataObject);
+        listNodeSetDataObject(listNode, dataObject);
         listNode->next = NULL;
     }
     return listNode;
@@ -52,7 +55,8 @@ ListNode * encapsulateDataObjectOnListNode(DataObject * dataObject)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-ListNode * getNextListNode(ListNode * listNode)
+ListNode *
+listNodeGetNext(ListNode * listNode)
 {
     if(listNode != NULL)
     {
@@ -65,8 +69,10 @@ ListNode * getNextListNode(ListNode * listNode)
 }
 
 
+
 /*-----------------------------------------------------------------------------------------------*/
-void setNextListNode(ListNode * listNode, ListNode * nextListNode)
+void
+listNodeSetNext(ListNode * listNode, ListNode * nextListNode)
 {
     if(listNode != NULL)
     {
@@ -75,8 +81,10 @@ void setNextListNode(ListNode * listNode, ListNode * nextListNode)
 }
 
 
+
 /*-----------------------------------------------------------------------------------------------*/
-size_t getSizeOfListNodeInBytes(ListNode * listNode)
+size_t
+listNodeGetSizeInBytes(ListNode * listNode)
 {
     size_t size = 0;
 
@@ -84,14 +92,17 @@ size_t getSizeOfListNodeInBytes(ListNode * listNode)
 
     if(listNode != NULL)
     {
-        size += getSizeOfDataObjectInBytes(listNode->dataObject);
+        size += dataObjectGetSizeInBytes(listNode->dataObject);
     }
     
     return size;
 }
 
+
+
 /*-----------------------------------------------------------------------------------------------*/
-DataObject * getDataFromListNode(ListNode * listNode)
+DataObject *
+listNodeGetDataObject(ListNode * listNode)
 {
     DataObject * dataObject;
 
@@ -110,11 +121,12 @@ DataObject * getDataFromListNode(ListNode * listNode)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-void clearDataObjectFromListNode(ListNode * listNode)
+void
+listNodeClearDataObject(ListNode * listNode)
 {
     if(listNode != NULL)
     {
-        destroyDataObject(listNode->dataObject);
+        dataObjectDestroy(listNode->dataObject);
         listNode->dataObject = NULL;
         listNode->next = NULL;
     }
@@ -123,8 +135,9 @@ void clearDataObjectFromListNode(ListNode * listNode)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-void destroyListNode(void * listNode)
+void
+listNodeDestroy(void * listNode)
 {
-    clearDataObjectFromListNode(listNode);
+    listNodeClearDataObject(listNode);
     free(listNode);
 }

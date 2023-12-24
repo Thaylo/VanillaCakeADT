@@ -4,8 +4,11 @@ set(TEST_FILES
     test_DataObject.cpp
     test_ListNode.cpp
     test_List.cpp
+    test_General_Helpers.cpp
     test_List_Helpers.cpp
     test_Stack.cpp
+    test_Vector.cpp
+    test_Vector_Helpers.cpp
     # Add other test files as needed
 )
 
@@ -41,6 +44,7 @@ target_sources(unit_tests PRIVATE
     ${CMAKE_SOURCE_DIR}/src/AbstractDataTypes/List/List.c
     ${CMAKE_SOURCE_DIR}/src/AbstractDataTypes/List/ListNode.c
     ${CMAKE_SOURCE_DIR}/src/AbstractDataTypes/Stack/Stack.c
+    ${CMAKE_SOURCE_DIR}/src/AbstractDataTypes/Vector/Vector.c
 
     # Add other source files as needed
 )

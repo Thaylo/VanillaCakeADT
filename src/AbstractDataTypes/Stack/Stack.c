@@ -6,68 +6,134 @@ struct Stack
     List * list;
 };
 
-Stack * stackCreate(void)
+
+
+
+/*-----------------------------------------------------------------------------------------------*/
+Stack *
+stackCreate(void)
 {
     Stack * stack = malloc(sizeof(Stack));
 
     if(stack != NULL)
     {
-        stack->list = createEmptyList();
+        stack->list = listCreate();
     }
 
     return stack;
 }
 
-void stackPush(Stack * stack, DataObject * data)
+
+
+/*-----------------------------------------------------------------------------------------------*/
+void
+stackPush(Stack * stack, DataObject * dataObject)
 {
-    if(stack != NULL && data != NULL)
+    if(stack != NULL && dataObject != NULL)
     {
-        insertToFrontOfList(stack->list, data);
+        listInsertToFrontOf(stack->list, dataObject);
     }
 }
 
-DataObject * stackPop(Stack * stack)
+
+
+/*-----------------------------------------------------------------------------------------------*/
+DataObject *
+stackPop(Stack * stack)
 {
-    DataObject * dataContainer = NULL;
+    DataObject * dataObject = NULL;
 
     if(stack != NULL)
     {
-        dataContainer = popFromFrontOfList(stack->list);
+        dataObject = listPopFromFrontOf(stack->list);
     }
 
-    return dataContainer;
+    return dataObject;
 }
 
-DataObject * stackPeek(Stack * stack)
+
+
+/*-----------------------------------------------------------------------------------------------*/
+DataObject *
+stackPeek(Stack * stack)
 {
-    DataObject * dataContainer = NULL;
+    DataObject * dataObject = NULL;
     int indexOfFirstPosition = 0;
 
     if(stack != NULL)
     {
-        dataContainer = elementAtListIndex(stack->list, indexOfFirstPosition);
+        dataObject = listElementAtIndexPosition(stack->list, indexOfFirstPosition);
     }
 
-    return dataContainer;
+    return dataObject;
 }
 
-int getStackLength(Stack * stack)
+
+
+/*-----------------------------------------------------------------------------------------------*/
+int
+stackGetLength(Stack * stack)
 {
     int stackLength = 0;
 
     if(stack != NULL)
     {
-        stackLength = getListLength(stack->list);
+        stackLength = listGetLength(stack->list);
     }
 
     return stackLength;
 }
 
-void destroyStack(void * stack)
+
+
+/*-----------------------------------------------------------------------------------------------*/
+List *
+stackConsumeOneListFromTop(Stack * stack)
+{
+    List * list = NULL;
+
+    if(stack != NULL && stackGetLength(stack) > 0)
+    {
+        void * currentList;
+        DataObject * dataObject;
+        size_t unused;
+
+        dataObject = stackPop(stack);
+        dataObjectGetWrappedData(dataObject, &currentList, &unused);
+        dataObjectDestroyKeepingWrappedData(dataObject);
+        
+        list = (List*) currentList;
+    }
+
+    return list;
+}
+
+
+
+/*-----------------------------------------------------------------------------------------------*/
+void
+stackStoreOneListOnTop(Stack * stack, List * list)
+{
+    if(stack != NULL && list != NULL)
+    {
+        DataObject * dataObject =
+            dataObjectWrapData(
+                list, listGetSizeInBytes(list), listDestroy, listDisplayWithSizeArg
+            );
+
+        stackPush(stack, dataObject);
+    }
+}
+
+
+
+/*-----------------------------------------------------------------------------------------------*/
+void
+stackDestroy(void * stack)
 {
     if(stack != NULL)
     {
-        destroyList(((Stack *) stack)->list);
+        listDestroy(((Stack *) stack)->list);
     }
     free(stack);
 }

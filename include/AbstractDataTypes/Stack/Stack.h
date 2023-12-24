@@ -5,22 +5,26 @@
 extern "C" {
 #endif
 
-
 #include "DataObject.h"
+#include "List.h"
 
 typedef struct Stack Stack;
 
 Stack * stackCreate(void);
 
-void stackPush(Stack * stack, DataObject * data);
+void stackPush(Stack * stack, DataObject * dataObject);
 
 DataObject * stackPop(Stack * stack);
 
 DataObject * stackPeek(Stack * stack);
 
-int getStackLength(Stack * stack);
+int stackGetLength(Stack * stack);
 
-void destroyStack(void * stack);
+List * stackConsumeOneListFromTop(Stack * stack);
+
+void stackStoreOneListOnTop(Stack * stack, List * list);
+
+void stackDestroy(void * stack);
 
 #ifdef __cplusplus
 }

@@ -9,17 +9,17 @@ extern "C" {
 
 typedef struct ListNode ListNode;
 
-ListNode * encapsulateDataObjectOnListNode(DataObject * dataObject);
+ListNode * listNodeWrapDataObject(DataObject * dataObject);
 
-ListNode * getNextListNode(ListNode * listNode);
+ListNode * listNodeGetNext(ListNode * listNode);
 
-void setNextListNode(ListNode * listNode, ListNode * nextListNode);
+void listNodeSetNext(ListNode * listNode, ListNode * nextListNode);
 
-size_t getSizeOfListNodeInBytes(ListNode * listNode);
+size_t listNodeGetSizeInBytes(ListNode * listNode);
 
-DataObject * getDataFromListNode(ListNode * listNode);
+DataObject * listNodeGetDataObject(ListNode * listNode);
 
-void destroyListNode(void * listNode);
+void listNodeDestroy(void * listNode);
 
 #ifdef __cplusplus
 }

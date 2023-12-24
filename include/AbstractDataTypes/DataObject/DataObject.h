@@ -11,32 +11,37 @@ typedef struct DataObject DataObject;
 
 
 /*-----------------------------------------------------------------------------------------------*/
-/* We assume the DataObject data structure will take the ownership of "void * data" and we can
-dealocate "void * data" only by using the clearDataOnDataObject function.
-CAUTION: Trying to dealocate "void * data" outside of DataObject functions will result in crash
+/* We assume the DataObject data structure will take the ownership of "void * wrappedData" and we can
+dealocate "void * wrappedData" only by using the clearDataOnDataObject function.
+CAUTION: Trying to dealocate "void * wrappedData" outside of DataObject functions will result in crash
 due to double free. */
 DataObject *
-encapsulateDataOnDataObject(
-    void * data,
+dataObjectWrapData(
+    void * wrappedData,
     size_t size,
     void (*dataDestroyCallback)(void *),
     void (*displayCallback)(void *, size_t));
 
+DataObject **
+dataObjectCreatePointerArray(int arrayLength);
+
 void
-getDataOnDataObject(
+dataObjectGetWrappedData(
     DataObject * dataObject,
-    void ** data,
+    void ** wrappedData,
     size_t * size);
 
-void displayDataObject(DataObject * dataObject);
+void dataObjectDisplay(DataObject * dataObject);
 
-void destroyDataObject(void * dataObject);
+void dataObjectDestroy(void * dataObject);
 
-void destroyDataObjectKeepingStoredData(void * dataObject);
+void dataObjectDestroyKeepingWrappedData(void * dataObject);
 
 void dataObjectDummyDisplay(void * data, size_t size);
 
-size_t getSizeOfDataObjectInBytes(DataObject * dataObject);
+size_t dataObjectGetSizeInBytes(DataObject * dataObject);
+
+void dataObjectDestroyPointerArray(DataObject ** dataObjectArray, int arrayLength);
 
 #ifdef __cplusplus
 }

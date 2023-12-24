@@ -1,8 +1,9 @@
-#include "test_List_Helpers.h"
-#include "List.h"
+#include "test_General_Helpers.h"
+#include "test_Vector_Helpers.h"
+#include "Vector.h"
 #include "DataObject.h"
 
-int populateListWithFloats(List * list, int numberOfElements, int isRandom)
+int populateVectorWithFloats(Vector * vector, int numberOfElements, int isRandom)
 {
     int status = SUCCESS;
 
@@ -35,10 +36,8 @@ int populateListWithFloats(List * list, int numberOfElements, int isRandom)
             status = MALLOC_ERROR;
             break;
         }
-        listInsertToFrontOf(list, dataObject);
+        vectorPushBack(vector, dataObject);
     }
 
     return status;
 }
-
-

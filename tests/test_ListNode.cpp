@@ -14,7 +14,7 @@ protected:
 
     void TearDown() override
     {
-        destroyListNode(listNode);
+        listNodeDestroy(listNode);
     }
     
     DataObject * dataObject;
@@ -24,15 +24,15 @@ protected:
 
 TEST_F(ListNodeTest, ListNodeEncapsulationOfDataObject_nullData)
 {
-    dataObject = encapsulateDataOnDataObject(nullptr, 0, free, dataObjectDummyDisplay);
-    listNode = encapsulateDataObjectOnListNode(dataObject);
-    DataObject * retrievedDataObject = getDataFromListNode(listNode);
+    dataObject = dataObjectWrapData(nullptr, 0, free, dataObjectDummyDisplay);
+    listNode = listNodeWrapDataObject(dataObject);
+    DataObject * retrievedDataObject = listNodeGetDataObject(listNode);
     EXPECT_EQ(dataObject, retrievedDataObject);
 
     void * retrievedInternalDataFromDataObject;
     size_t retrievedInternalDataSizeFromDataObject;
 
-    getDataOnDataObject(
+    dataObjectGetWrappedData(
         retrievedDataObject,
         &retrievedInternalDataFromDataObject,
         &retrievedInternalDataSizeFromDataObject);
@@ -54,8 +54,8 @@ TEST_F(ListNodeTest, ListNodeEncapsulationOfDataObject_notNullData)
         integerArray[i] = expectedArrayContent[i];
     }
 
-    dataObject = encapsulateDataOnDataObject(integerArray, integerArraySize, free, dataObjectDummyDisplay);
-    listNode = encapsulateDataObjectOnListNode(dataObject);
-    DataObject * retrievedDataObject = getDataFromListNode(listNode);
+    dataObject = dataObjectWrapData(integerArray, integerArraySize, free, dataObjectDummyDisplay);
+    listNode = listNodeWrapDataObject(dataObject);
+    DataObject * retrievedDataObject = listNodeGetDataObject(listNode);
     EXPECT_EQ(dataObject, retrievedDataObject);
 }

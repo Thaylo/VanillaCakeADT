@@ -11,43 +11,43 @@ extern "C" {
 
 typedef struct List List;
 
-List * createEmptyList();
+List * listCreate();
 
-int insertToFrontOfList(List * list, DataObject * dataObject);
+int listInsertToFrontOf(List * list, DataObject * dataObject);
 
-DataObject * elementAtListIndex(List * list, int position);
+DataObject * listElementAtIndexPosition(List * list, int position);
 
-void removeFromFrontOfList(List * list);
+void listDeleteFromFrontOf(List * list);
 
-DataObject * popFromFrontOfList(List * list);
+DataObject * listPopFromFrontOf(List * list);
 
-int getListLength(List * list);
+int listGetLength(List * list);
 
-void sortList(
+void listSort(
     List ** list,
     int (*sortComparison)(DataObject *, DataObject *, int usingAscendingOrder),
     int usingAscendingOrder);
 
-void displayListWithSizeT(void * listPointer, size_t unusedArgumentForSize);
+void listDisplayWithSizeArg(void * listPointer, size_t unusedArgumentForSize);
 
-void displayList(void * listPointer);
+void listDisplay(void * listPointer);
 
-size_t getListSizeInBytes(List * list);
+size_t listGetSizeInBytes(List * list);
 
-int getIsSortedStatus(List * list);
+int listIsSorted(List * list);
 
-void setIsSortedStatus(List * list, int status);
+void listSetAsSorted(List * list, int status);
 
-int verifyIfListIsSorted(
+int listVerifyIfIsSorted(
     List * list,
     int (*sortComparison)(DataObject *, DataObject *, int usingAscendingOrder),
     int usingAscendingOrder);
 
-int splitListInTwoHalves(List ** list, List ** listA, List ** listB);
+int listSplitInHalves(List ** list, List ** listA, List ** listB);
 
-int getListLengthByCounting(List * list);
+int listGetLengthByCounting(List * list);
 
-void destroyList(void * list);
+void listDestroy(void * list);
 
 #ifdef __cplusplus
 }

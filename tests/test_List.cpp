@@ -22,49 +22,49 @@ class ListTest : public testing::Test
 protected:
     void SetUp() override
     {
-        list = createEmptyList();
+        list = listCreate();
         srand(time(NULL));   // Initialization, should only be called once.
     }
 
     void TearDown() override
     {
-        destroyList(list);
+        listDestroy(list);
     }
     
     List * list;
-    int numberOfListElementsDuringStressTest = 1*1000*1000;
+    int numberOfListElementsDuringStressTest = 1*1000;
 };
 
-TEST_F(ListTest, createEmptyList)
+TEST_F(ListTest, listCreate)
 {
-    EXPECT_EQ(getListLength(list), 0);
+    EXPECT_EQ(listGetLength(list), 0);
 }
 
-TEST_F(ListTest, insertToFrontOfList)
+TEST_F(ListTest, listInsertToFrontOf)
 {
     int repetitions = 11;
     for(int i = 0; i < repetitions; ++i)
     {
-        int status = insertToFrontOfList(list, NULL);
+        int status = listInsertToFrontOf(list, NULL);
         EXPECT_EQ(status, SUCCESS);
     }
-    EXPECT_EQ(getListLength(list), repetitions);
+    EXPECT_EQ(listGetLength(list), repetitions);
 }
 
 TEST_F(ListTest, elementAtList_empty)
 {
-    EXPECT_EQ(elementAtListIndex(list, -1), (DataObject *) NULL);
-    EXPECT_EQ(elementAtListIndex(list, 0), (DataObject *) NULL);
-    EXPECT_EQ(elementAtListIndex(list, 1), (DataObject *) NULL);
-    EXPECT_EQ(elementAtListIndex(list, 10), (DataObject *) NULL);
+    EXPECT_EQ(listElementAtIndexPosition(list, -1), (DataObject *) NULL);
+    EXPECT_EQ(listElementAtIndexPosition(list, 0), (DataObject *) NULL);
+    EXPECT_EQ(listElementAtIndexPosition(list, 1), (DataObject *) NULL);
+    EXPECT_EQ(listElementAtIndexPosition(list, 10), (DataObject *) NULL);
 }
 
 TEST_F(ListTest, elementAtList_nullList)
 {
-    EXPECT_EQ(elementAtListIndex(NULL, -1), (DataObject *) NULL);
-    EXPECT_EQ(elementAtListIndex(NULL, 0), (DataObject *) NULL);
-    EXPECT_EQ(elementAtListIndex(NULL, 1), (DataObject *) NULL);
-    EXPECT_EQ(elementAtListIndex(NULL, 10), (DataObject *) NULL);
+    EXPECT_EQ(listElementAtIndexPosition(NULL, -1), (DataObject *) NULL);
+    EXPECT_EQ(listElementAtIndexPosition(NULL, 0), (DataObject *) NULL);
+    EXPECT_EQ(listElementAtIndexPosition(NULL, 1), (DataObject *) NULL);
+    EXPECT_EQ(listElementAtIndexPosition(NULL, 10), (DataObject *) NULL);
 }
 
 TEST_F(ListTest, elementAtList_notEmpty)
@@ -72,50 +72,50 @@ TEST_F(ListTest, elementAtList_notEmpty)
     int numberOfElements = 5;
     populateListWithFloats(list, numberOfElements, 0);
     
-    EXPECT_EQ(elementAtListIndex(list, -1), (DataObject *) NULL);
+    EXPECT_EQ(listElementAtIndexPosition(list, -1), (DataObject *) NULL);
     for(int i = 0; i < numberOfElements; ++i)
     {
         void * dataObjectData;
         size_t dataObjectSize;
 
-        getDataOnDataObject(elementAtListIndex(list, i), &dataObjectData, &dataObjectSize);
+        dataObjectGetWrappedData(listElementAtIndexPosition(list, i), &dataObjectData, &dataObjectSize);
         
         // Verifying against the sequence of values: 4.0, 3.0, 2.0, 1.0, 0.0
         EXPECT_EQ(*(float*) dataObjectData, numberOfElements - (i + 1));
     }
 
-    EXPECT_EQ(elementAtListIndex(list, numberOfElements), (DataObject *) NULL);
+    EXPECT_EQ(listElementAtIndexPosition(list, numberOfElements), (DataObject *) NULL);
 }
 
-TEST_F(ListTest, removeFromFrontOfList)
+TEST_F(ListTest, listDeleteFromFrontOf)
 {
     int inclusions = 11;
     int removals = 4;
     
     for(int i = 0; i < inclusions; ++i)
     {
-        int status = insertToFrontOfList(list, NULL);
+        int status = listInsertToFrontOf(list, NULL);
         EXPECT_EQ(status, SUCCESS);
     }
     
-    EXPECT_EQ(getListLength(list), inclusions);
+    EXPECT_EQ(listGetLength(list), inclusions);
     
     for(int i = 0; i < removals; ++i)
     {
-        removeFromFrontOfList(list);
+        listDeleteFromFrontOf(list);
     }
 
-    EXPECT_EQ(getListLength(list), inclusions - removals);
+    EXPECT_EQ(listGetLength(list), inclusions - removals);
 
     for(int i = removals; i < inclusions; ++i)
     {
-        removeFromFrontOfList(list);
+        listDeleteFromFrontOf(list);
     }
 
-    EXPECT_EQ(getListLength(list), 0);
+    EXPECT_EQ(listGetLength(list), 0);
 }
 
-TEST_F(ListTest, popFromFrontOfList)
+TEST_F(ListTest, listPopFromFrontOf)
 {
     int numberOfElements = 5;
 
@@ -123,38 +123,38 @@ TEST_F(ListTest, popFromFrontOfList)
 
     for(int i = 0; i < numberOfElements; ++i)
     {
-        DataObject * dataObject = popFromFrontOfList(list);
+        DataObject * dataObject = listPopFromFrontOf(list);
 
-        EXPECT_EQ(getListLength(list), numberOfElements-(i+1));
+        EXPECT_EQ(listGetLength(list), numberOfElements-(i+1));
 
         float * retrievedPointerValue;
         size_t retrievedValueSize;
 
-        getDataOnDataObject(dataObject, (void**) &retrievedPointerValue, &retrievedValueSize);
+        dataObjectGetWrappedData(dataObject, (void**) &retrievedPointerValue, &retrievedValueSize);
 
         float retrievedValue = *retrievedPointerValue;
         
         // Verifies if List == {4.0, 3.0, 2.0, 1.0, 0.0}
         EXPECT_EQ(retrievedValue, (numberOfElements-i)-1);
 
-        destroyDataObject(dataObject);
+        dataObjectDestroy(dataObject);
     }
 }
 
-TEST_F(ListTest, getListLength)
+TEST_F(ListTest, listGetLength)
 {
-    EXPECT_EQ(getListLength(list), 0);
-    insertToFrontOfList(list, NULL);
-    EXPECT_EQ(getListLength(list), 1);
-    insertToFrontOfList(list, NULL);
-    EXPECT_EQ(getListLength(list), 2);
-    popFromFrontOfList(list);
-    EXPECT_EQ(getListLength(list), 1);
-    popFromFrontOfList(list);
-    EXPECT_EQ(getListLength(list), 0);
+    EXPECT_EQ(listGetLength(list), 0);
+    listInsertToFrontOf(list, NULL);
+    EXPECT_EQ(listGetLength(list), 1);
+    listInsertToFrontOf(list, NULL);
+    EXPECT_EQ(listGetLength(list), 2);
+    listPopFromFrontOf(list);
+    EXPECT_EQ(listGetLength(list), 1);
+    listPopFromFrontOf(list);
+    EXPECT_EQ(listGetLength(list), 0);
 }
 
-TEST_F(ListTest, sortList)
+TEST_F(ListTest, listSort)
 {
     int diff;
     int numberOfElements = 5;
@@ -169,12 +169,12 @@ TEST_F(ListTest, sortList)
         return;
     }
 
-    sortList(&list, compareFloats, 1);
-    isSorted = verifyIfListIsSorted(list, compareFloats, 1);
+    listSort(&list, compareFloats, 1);
+    isSorted = listVerifyIfIsSorted(list, compareFloats, 1);
     EXPECT_EQ(isSorted, 1);
 
-    sortList(&list, compareFloats, 0);
-    isSorted = verifyIfListIsSorted(list, compareFloats, 0);
+    listSort(&list, compareFloats, 0);
+    isSorted = listVerifyIfIsSorted(list, compareFloats, 0);
     EXPECT_EQ(isSorted, 1);
 }
 
@@ -206,7 +206,7 @@ TEST_F(ListTest, sortList_ascendingOrder_StressTest)
         ftime(&start);
     #endif
     
-    sortList(&list, compareFloats, 1);
+    listSort(&list, compareFloats, 1);
     
     #if defined(__linux__)
         clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
@@ -221,12 +221,12 @@ TEST_F(ListTest, sortList_ascendingOrder_StressTest)
         diff = (int) (1000.0 * (end.time - start.time) + (end.millitm - start.millitm));
     #endif
 
-    size_t listSizeInBytes = getListSizeInBytes(list);
-    isSorted = verifyIfListIsSorted(list, compareFloats, 1);
+    size_t listSizeInBytes = listGetSizeInBytes(list);
+    isSorted = listVerifyIfIsSorted(list, compareFloats, 1);
     EXPECT_EQ(isSorted, 1);
 }
 
-TEST_F(ListTest, splitListInTwoHalves)
+TEST_F(ListTest, listSplitInHalves)
 {
     int numberOfElements = 5;
     int status = populateListWithFloats(list, numberOfElements, 0);
@@ -240,15 +240,15 @@ TEST_F(ListTest, splitListInTwoHalves)
     List * firstHalf = NULL;
     List * secondHalf = NULL;
 
-    splitListInTwoHalves(&list, &firstHalf, &secondHalf);
+    listSplitInHalves(&list, &firstHalf, &secondHalf);
 
-    EXPECT_EQ(getListLength(firstHalf), 3);
-    EXPECT_EQ(getListLength(firstHalf), getListLengthByCounting(firstHalf));
-    EXPECT_EQ(getListLength(secondHalf), 2);
-    EXPECT_EQ(getListLength(secondHalf), getListLengthByCounting(secondHalf));
+    EXPECT_EQ(listGetLength(firstHalf), 3);
+    EXPECT_EQ(listGetLength(firstHalf), listGetLengthByCounting(firstHalf));
+    EXPECT_EQ(listGetLength(secondHalf), 2);
+    EXPECT_EQ(listGetLength(secondHalf), listGetLengthByCounting(secondHalf));
 
-    destroyList(firstHalf);
-    destroyList(secondHalf);
+    listDestroy(firstHalf);
+    listDestroy(secondHalf);
 }
 
 
@@ -281,7 +281,7 @@ TEST_F(ListTest, sortList_descendingOrder_StressTest)
         ftime(&start);
     #endif
     
-    sortList(&list, compareFloats, 0);
+    listSort(&list, compareFloats, 0);
     
     #if defined(__linux__)
         clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
@@ -295,7 +295,7 @@ TEST_F(ListTest, sortList_descendingOrder_StressTest)
         diff = (int) (1000.0 * (end.time - start.time) + (end.millitm - start.millitm));
     #endif
 
-    size_t listSizeInBytes = getListSizeInBytes(list);
-    isSorted = verifyIfListIsSorted(list, compareFloats, 0);
+    size_t listSizeInBytes = listGetSizeInBytes(list);
+    isSorted = listVerifyIfIsSorted(list, compareFloats, 0);
     EXPECT_EQ(isSorted, 1);
 }

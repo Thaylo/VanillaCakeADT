@@ -3,7 +3,7 @@
 #include "DataObject.h"
 
 struct DataObject{
-    void * data;
+    void * wrappedData;
     size_t size;
     void (*dataDestroyCallback)(void *);
     void (*displayCallback)(void *, size_t);
@@ -17,7 +17,7 @@ createEmptyDataObject()
 {
     DataObject * dataObject = malloc(sizeof(DataObject));
     
-    dataObject->data = NULL;
+    dataObject->wrappedData = NULL;
     dataObject->size = 0;
 
     dataObject->dataDestroyCallback = NULL;
@@ -32,12 +32,12 @@ createEmptyDataObject()
 void
 setDataOnDataObject(
     DataObject * dataObject,
-    void * data,
+    void * wrappedData,
     size_t size,
     void (*dataDestroyCallback)(void *),
     void (*displayCallback)(void *, size_t))
 {    
-    dataObject->data = data;
+    dataObject->wrappedData = wrappedData;
     dataObject->size = size;
 
     dataObject->dataDestroyCallback = dataDestroyCallback;
@@ -48,19 +48,19 @@ setDataOnDataObject(
 
 /*-----------------------------------------------------------------------------------------------*/
 void
-getDataOnDataObject(
+dataObjectGetWrappedData(
     DataObject * dataObject,
-    void ** data,
+    void ** wrappedData,
     size_t * size)
 {
     if(dataObject != NULL)
     {
-        *data = dataObject->data;
+        *wrappedData = dataObject->wrappedData;
         *size = dataObject->size;
     }
     else
     {
-        *data = NULL;
+        *wrappedData = NULL;
         *size = (size_t) 0;
     }
 }
@@ -68,22 +68,38 @@ getDataOnDataObject(
 
 
 /*-----------------------------------------------------------------------------------------------*/
-/* We assume the DataObject data structure will take the ownership of "void * data" and we can
-dealocate "void * data" only by using the clearDataOnDataObject function.
-CAUTION: Trying to dealocate "void * data" outside of DataObject functions will result in crash
+/* We assume the DataObject data structure will take the ownership of "void * wrappedData" and we can
+dealocate "void * wrappedData" only by using the clearDataOnDataObject function.
+CAUTION: Trying to dealocate "void * wrappedData" outside of DataObject functions will result in crash
 due to double free. */
 DataObject *
-encapsulateDataOnDataObject(
-    void * data,
+dataObjectWrapData(
+    void * wrappedData,
     size_t size,
     void (*dataDestroyCallback)(void *),
     void (*displayCallback)(void *, size_t))
 {
     DataObject * dataObject = createEmptyDataObject();
     
-    setDataOnDataObject(dataObject, data, size, dataDestroyCallback, displayCallback);
+    setDataOnDataObject(dataObject, wrappedData, size, dataDestroyCallback, displayCallback);
 
     return dataObject;
+}
+
+
+
+/*-----------------------------------------------------------------------------------------------*/
+DataObject **
+dataObjectCreatePointerArray(int arrayLength)
+{
+    DataObject ** dataObjectArray = malloc(arrayLength * sizeof(DataObject*));
+
+    for(int i = 0; i < arrayLength; i++)
+    {
+        dataObjectArray[i] = createEmptyDataObject();
+    }
+
+    return dataObjectArray;
 }
 
 
@@ -96,10 +112,10 @@ clearDataOnDataObject(DataObject * dataObject)
     {
         if(dataObject->dataDestroyCallback != NULL)
         {
-            dataObject->dataDestroyCallback(dataObject->data);
+            dataObject->dataDestroyCallback(dataObject->wrappedData);
         }
 
-        dataObject->data = NULL;
+        dataObject->wrappedData = NULL;
         dataObject->size = 0;
 
         dataObject->dataDestroyCallback = NULL;
@@ -110,11 +126,11 @@ clearDataOnDataObject(DataObject * dataObject)
 
 /*-----------------------------------------------------------------------------------------------*/
 void
-displayDataObject(DataObject * dataObject)
+dataObjectDisplay(DataObject * dataObject)
 {
     if(dataObject != NULL)
     {
-        dataObject->displayCallback(dataObject->data, dataObject->size);
+        dataObject->displayCallback(dataObject->wrappedData, dataObject->size);
     }
 }
 
@@ -122,7 +138,7 @@ displayDataObject(DataObject * dataObject)
 
 /*-----------------------------------------------------------------------------------------------*/
 void
-destroyDataObject(void * dataObject)
+dataObjectDestroy(void * dataObject)
 {
     clearDataOnDataObject(dataObject);
     free(dataObject);
@@ -132,7 +148,7 @@ destroyDataObject(void * dataObject)
 
 /*-----------------------------------------------------------------------------------------------*/
 void
-destroyDataObjectKeepingStoredData(void * dataObject)
+dataObjectDestroyKeepingWrappedData(void * dataObject)
 {
     free(dataObject);
 }
@@ -150,7 +166,7 @@ dataObjectDummyDisplay(void * data, size_t size)
 
 /*-----------------------------------------------------------------------------------------------*/
 size_t
-getSizeOfDataObjectInBytes(DataObject * dataObject)
+dataObjectGetSizeInBytes(DataObject * dataObject)
 {
     size_t sizeInBytes = 0;
 
@@ -161,4 +177,19 @@ getSizeOfDataObjectInBytes(DataObject * dataObject)
 
     sizeInBytes += sizeof(DataObject);
     return sizeInBytes;
+}
+
+
+
+/*-----------------------------------------------------------------------------------------------*/
+void
+dataObjectDestroyPointerArray(DataObject ** dataObjectArray, int arrayLength)
+{
+    
+    for(int i = 0; i < arrayLength; i++)
+    {
+        dataObjectDestroy(dataObjectArray[i]);
+    }
+
+    free(dataObjectArray);
 }

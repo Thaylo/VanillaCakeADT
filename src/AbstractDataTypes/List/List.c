@@ -9,11 +9,13 @@ struct List{
 };
 
 
-void appendListToEndOfList(List * destination, List * source);
+void listAppendToEndOfList(List * destination, List * source);
+
 
 
 /*-----------------------------------------------------------------------------------------------*/
-List * createEmptyList()
+List *
+listCreate()
 {
     List * list = (List *) malloc(sizeof(List));
 
@@ -31,11 +33,12 @@ List * createEmptyList()
 
 
 /*-----------------------------------------------------------------------------------------------*/
-int insertToFrontOfList(List * list, DataObject * dataObject)
+int
+listInsertToFrontOf(List * list, DataObject * dataObject)
 {
     if (list != NULL)
     {
-        ListNode * listNode = encapsulateDataObjectOnListNode(dataObject);
+        ListNode * listNode = listNodeWrapDataObject(dataObject);
 
         if (listNode != NULL)
         {
@@ -47,7 +50,7 @@ int insertToFrontOfList(List * list, DataObject * dataObject)
             }
             else
             {
-                setNextListNode(listNode, list->first);
+                listNodeSetNext(listNode, list->first);
                 list->first = listNode;
                 list->hasListBeenSorted = 0;
             }
@@ -68,11 +71,12 @@ int insertToFrontOfList(List * list, DataObject * dataObject)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-int insertToBackOfList(List * list, DataObject * dataObject)
+int
+listInsertToBackOf(List * list, DataObject * dataObject)
 {
     if (list != NULL)
     {
-        ListNode * listNode = encapsulateDataObjectOnListNode(dataObject);
+        ListNode * listNode = listNodeWrapDataObject(dataObject);
 
         if (listNode != NULL)
         {
@@ -83,7 +87,7 @@ int insertToBackOfList(List * list, DataObject * dataObject)
             }
             else
             {
-                setNextListNode(list->last, listNode);
+                listNodeSetNext(list->last, listNode);
                 list->last = listNode;
                 list->hasListBeenSorted = 0;
             }
@@ -104,7 +108,8 @@ int insertToBackOfList(List * list, DataObject * dataObject)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-DataObject * elementAtListIndex(List * list, int position)
+DataObject *
+listElementAtIndexPosition(List * list, int position)
 {
     DataObject * element = NULL;
     int count = 0;
@@ -114,12 +119,12 @@ DataObject * elementAtListIndex(List * list, int position)
         for (
             ListNode * nodeIterator = list->first;
             nodeIterator != NULL;
-            nodeIterator = getNextListNode(nodeIterator) )
+            nodeIterator = listNodeGetNext(nodeIterator) )
         {
 
             if(count == position)
             {
-                element = getDataFromListNode(nodeIterator);
+                element = listNodeGetDataObject(nodeIterator);
                 break;
             }
 
@@ -133,16 +138,17 @@ DataObject * elementAtListIndex(List * list, int position)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-// The data stored in the first element will be deleted by a DataObject callback.
-void removeFromFrontOfList(List * list)
+// The wrappedData stored in the first element will be deleted by a DataObject callback.
+void
+listDeleteFromFrontOf(List * list)
 {
     if (list != NULL)
     {
         if (list->first != NULL)
         {
-            ListNode * secondListNode = getNextListNode(list->first);
+            ListNode * secondListNode = listNodeGetNext(list->first);
 
-            destroyListNode(list->first);
+            listNodeDestroy(list->first);
             
             list->first = secondListNode;
             list->length--;
@@ -158,9 +164,10 @@ void removeFromFrontOfList(List * list)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-// The data stored in the first element WONT be deleted by a DataObject callback.
+// The wrappedData stored in the first element WONT be deleted by a DataObject callback.
 // ListNode that contains the DataObject will be deallocated.
-DataObject * popFromFrontOfList(List * list)
+DataObject *
+listPopFromFrontOf(List * list)
 {
     DataObject * dataObject = NULL;
 
@@ -168,9 +175,9 @@ DataObject * popFromFrontOfList(List * list)
     {
         if (list->first != NULL)
         {
-            ListNode * secondListNode = getNextListNode(list->first);
+            ListNode * secondListNode = listNodeGetNext(list->first);
 
-            dataObject = getDataFromListNode(list->first);
+            dataObject = listNodeGetDataObject(list->first);
 
             free(list->first);
             
@@ -190,7 +197,8 @@ DataObject * popFromFrontOfList(List * list)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-int getListLength(List * list)
+int
+listGetLength(List * list)
 {
     int count = 0;
 
@@ -205,90 +213,53 @@ int getListLength(List * list)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-List * consumeOneListFromTopOfStack(Stack * stack)
-{
-    List * list = NULL;
-
-    if(stack != NULL && getStackLength(stack) > 0)
-    {
-        void * currentList;
-        DataObject * dataObject;
-        size_t unused;
-
-        dataObject = stackPop(stack);
-        getDataOnDataObject(dataObject, &currentList, &unused);
-        destroyDataObjectKeepingStoredData(dataObject);
-        
-        list = (List*) currentList;
-    }
-
-    return list;
-}
-
-
-
-/*-----------------------------------------------------------------------------------------------*/
-void storeListOnTopOfStack(Stack * stack, List * list)
-{
-    if(stack != NULL && list != NULL)
-    {
-        DataObject * dataObject =
-            encapsulateDataOnDataObject(
-                list, sizeof(List), destroyList, displayListWithSizeT
-            );
-
-        stackPush(stack, dataObject);
-    }
-}
-
-
-
-/*-----------------------------------------------------------------------------------------------*/
-void iterativeSortedMerge(
+void
+listISortedMerge(
     List ** mergedList, List ** listA, List ** listB,
     int (*sortComparison)(DataObject *, DataObject *, int),
     int usingAscendingOrder)
 {
     if(*mergedList != NULL && *listA != NULL && *listB != NULL)
     {
-        while(getListLength(*listA) > 0 && getListLength(*listB) > 0)
+        while(listGetLength(*listA) > 0 && listGetLength(*listB) > 0)
         {
-            DataObject * a = elementAtListIndex(*listA, 0);
-            DataObject * b = elementAtListIndex(*listB, 0);
+            DataObject * a = listElementAtIndexPosition(*listA, 0);
+            DataObject * b = listElementAtIndexPosition(*listB, 0);
 
             if(sortComparison(a, b, usingAscendingOrder) <= 0)
             {
-                insertToBackOfList(*mergedList, popFromFrontOfList(*listA));
+                listInsertToBackOf(*mergedList, listPopFromFrontOf(*listA));
             }
             else
             {
-                insertToBackOfList(*mergedList, popFromFrontOfList(*listB));
+                listInsertToBackOf(*mergedList, listPopFromFrontOf(*listB));
             }
         }
 
-        if(getListLength(*listA) > 0)
+        if(listGetLength(*listA) > 0)
         {
-            appendListToEndOfList(*mergedList, *listA);
+            listAppendToEndOfList(*mergedList, *listA);
         }
 
-        if(getListLength(*listB) > 0)
+        if(listGetLength(*listB) > 0)
         {
-            appendListToEndOfList(*mergedList, *listB);
+            listAppendToEndOfList(*mergedList, *listB);
         }
 
-        destroyList(*listA);
-        destroyList(*listB);
+        listDestroy(*listA);
+        listDestroy(*listB);
         *listA = NULL;
         *listB = NULL;
 
-        setIsSortedStatus(*mergedList, 1);
+        listSetAsSorted(*mergedList, 1);
     }
 }
 
 
 
 /*-----------------------------------------------------------------------------------------------*/
-void appendListToEndOfList(List * destination, List * source)
+void
+listAppendToEndOfList(List * destination, List * source)
 {
     if(destination != NULL && source != NULL)
     {
@@ -299,7 +270,7 @@ void appendListToEndOfList(List * destination, List * source)
         }
         else
         {
-            setNextListNode(destination->last, source->first);
+            listNodeSetNext(destination->last, source->first);
             destination->last = source->last;
         }
 
@@ -316,70 +287,71 @@ void appendListToEndOfList(List * destination, List * source)
 
 /*-----------------------------------------------------------------------------------------------*/
 /* sorts the linked list by changing next pointers (not data) */
-void iterativeMergeSort(
+void
+listMergeSort(
     List ** listRef,
     int (*sortComparison)(DataObject *, DataObject *, int),
     int usingAscendingOrder)
 {
     List * list = *listRef;
 
-    setIsSortedStatus(list, 0);
+    listSetAsSorted(list, 0);
 
-    const int totalListLength = getListLength(list);
+    const int totalListLength = listGetLength(list);
 
     Stack * listsToBeProcessed = stackCreate();
     
-    storeListOnTopOfStack(listsToBeProcessed, list);
+    stackStoreOneListOnTop(listsToBeProcessed, list);
 
-    while(getStackLength(listsToBeProcessed) > 0)
+    while(stackGetLength(listsToBeProcessed) > 0)
     {
-        if(getStackLength(listsToBeProcessed) == 1)
+        if(stackGetLength(listsToBeProcessed) == 1)
         {
-            list = consumeOneListFromTopOfStack(listsToBeProcessed);
+            list = stackConsumeOneListFromTop(listsToBeProcessed);
 
-            if(getIsSortedStatus(list) != 1)
+            if(listIsSorted(list) != 1)
             {
                 List * listA, * listB;
-                splitListInTwoHalves(&list, &listA, &listB);
-                storeListOnTopOfStack(listsToBeProcessed, listA);
-                storeListOnTopOfStack(listsToBeProcessed, listB);
+                listSplitInHalves(&list, &listA, &listB);
+                stackStoreOneListOnTop(listsToBeProcessed, listA);
+                stackStoreOneListOnTop(listsToBeProcessed, listB);
             }
             else 
             {
-                destroyStack(listsToBeProcessed);
+                stackDestroy(listsToBeProcessed);
                 *listRef = list;
                 break;
             }
         }
         else
         {
-            List * listA = consumeOneListFromTopOfStack(listsToBeProcessed);
+            List * listA = stackConsumeOneListFromTop(listsToBeProcessed);
             
-            if(getIsSortedStatus(listA) == 1)
+            if(listIsSorted(listA) == 1)
             {
-                List * listB = consumeOneListFromTopOfStack(listsToBeProcessed);
+                List * listB = stackConsumeOneListFromTop(listsToBeProcessed);
 
-                if(getIsSortedStatus(listB) == 1)
+                if(listIsSorted(listB) == 1)
                 {
-                    List * mergedList = createEmptyList();
-                    iterativeSortedMerge(&mergedList, &listA, &listB, sortComparison, usingAscendingOrder);
-                    storeListOnTopOfStack(listsToBeProcessed, mergedList);
+                    List * mergedList = listCreate();
+                    listISortedMerge(&mergedList, &listA, &listB, sortComparison, usingAscendingOrder);
+                    stackStoreOneListOnTop(listsToBeProcessed, mergedList);
                 }
                 else
                 {
                     List * listB1, * listB2;
-                    splitListInTwoHalves(&listB, &listB1, &listB2);
-                    storeListOnTopOfStack(listsToBeProcessed, listA);
-                    storeListOnTopOfStack(listsToBeProcessed, listB1);
-                    storeListOnTopOfStack(listsToBeProcessed, listB2);
+                    listSplitInHalves(&listB, &listB1, &listB2);
+                    stackStoreOneListOnTop(listsToBeProcessed, listA);
+                    stackStoreOneListOnTop(listsToBeProcessed, listB1);
+                    stackStoreOneListOnTop(listsToBeProcessed, listB2);
                 }
             }
             else
             {
                 List * listA1, * listA2;
-                splitListInTwoHalves(&listA, &listA1, &listA2);
-                storeListOnTopOfStack(listsToBeProcessed, listA1);
-                storeListOnTopOfStack(listsToBeProcessed, listA2);
+                listSplitInHalves(&listA, &listA1, &listA2);
+                stackStoreOneListOnTop(listsToBeProcessed, listA1);
+                stackStoreOneListOnTop(listsToBeProcessed, listA2);
             }
         }
     }
@@ -388,18 +360,20 @@ void iterativeMergeSort(
 
 
 /*-----------------------------------------------------------------------------------------------*/
-void sortList(
+void
+listSort(
     List ** list,
     int (*sortComparison)(DataObject *, DataObject *, int usingAscendingOrder),
     int usingAscendingOrder)
 {
-    iterativeMergeSort(list, sortComparison, usingAscendingOrder);
+    listMergeSort(list, sortComparison, usingAscendingOrder);
 }
 
 
 
 /*-----------------------------------------------------------------------------------------------*/
-void displayListWithSizeT(void * listPointer, size_t unusedArgumentForSize)
+void
+listDisplayWithSizeArg(void * listPointer, size_t unusedArgumentForSize)
 {
     List * list = (List*) listPointer;
     int cnt = 0;
@@ -411,12 +385,12 @@ void displayListWithSizeT(void * listPointer, size_t unusedArgumentForSize)
         for (
             ListNode * nodeIterator = list->first;
             nodeIterator != NULL;
-            nodeIterator = getNextListNode(nodeIterator)
+            nodeIterator = listNodeGetNext(nodeIterator)
             )
         {
             if (cnt <= 3)
             {
-                displayDataObject(getDataFromListNode(nodeIterator));
+                dataObjectDisplay(listNodeGetDataObject(nodeIterator));
             }
             else if(cnt == 4)
             {
@@ -425,7 +399,6 @@ void displayListWithSizeT(void * listPointer, size_t unusedArgumentForSize)
             }
             cnt++;
         }
-        displayDataObject(getDataFromListNode(list->last));
     }
 
     printf("]\n");
@@ -435,14 +408,17 @@ void displayListWithSizeT(void * listPointer, size_t unusedArgumentForSize)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-void displayList(void * list)
+void
+listDisplay(void * list)
 {
-    displayListWithSizeT(list, (size_t) sizeof(List));
+    listDisplayWithSizeArg(list, (size_t) sizeof(List));
 }
 
 
+
 /*-----------------------------------------------------------------------------------------------*/
-size_t getListSizeInBytes(List * list)
+size_t
+listGetSizeInBytes(List * list)
 {
     size_t size = 0;
 
@@ -451,10 +427,10 @@ size_t getListSizeInBytes(List * list)
         for (
             ListNode * nodeIterator = list->first;
             nodeIterator != NULL;
-            nodeIterator = getNextListNode(nodeIterator)
+            nodeIterator = listNodeGetNext(nodeIterator)
             )
         {
-            size += getSizeOfListNodeInBytes(nodeIterator);
+            size += listNodeGetSizeInBytes(nodeIterator);
         }
         size += sizeof(List);
     }
@@ -464,7 +440,8 @@ size_t getListSizeInBytes(List * list)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-int getIsSortedStatus(List * list)
+int
+listIsSorted(List * list)
 {
     int status = 0;
     
@@ -484,7 +461,8 @@ int getIsSortedStatus(List * list)
 
 
 /*-----------------------------------------------------------------------------------------------*/
-void setIsSortedStatus(List * list, int status)
+void
+listSetAsSorted(List * list, int status)
 {
     if(list != NULL)
     {
@@ -499,7 +477,8 @@ void setIsSortedStatus(List * list, int status)
 The comparison function must return an integer less than, equal to, or greater than zero if the
 first argument is considered to be respectively less than, equal to, or greater than the second.
 */
-int verifyIfListIsSorted(
+int
+listVerifyIfIsSorted(
     List * list,
     int (*sortComparison)(DataObject *, DataObject *, int usingAscendingOrder),
     int usingAscendingOrder)
@@ -508,18 +487,18 @@ int verifyIfListIsSorted(
 
     if (list != NULL)
     {
-        if(getListLength(list) <= 1)
+        if(listGetLength(list) <= 1)
         {
             return isSorted;
         }
 
         ListNode * nodeIterator = list->first;
-        ListNode * nextNodeIterator = getNextListNode(list->first);
+        ListNode * nextNodeIterator = listNodeGetNext(list->first);
 
         while(nextNodeIterator != NULL)
         {
             int comparisonResult =
-                sortComparison(getDataFromListNode(nodeIterator), getDataFromListNode(nextNodeIterator), usingAscendingOrder);
+                sortComparison(listNodeGetDataObject(nodeIterator), listNodeGetDataObject(nextNodeIterator), usingAscendingOrder);
 
             if (comparisonResult > 0)
             {
@@ -528,46 +507,48 @@ int verifyIfListIsSorted(
             }
 
             nodeIterator = nextNodeIterator;
-            nextNodeIterator = getNextListNode(nextNodeIterator);
+            nextNodeIterator = listNodeGetNext(nextNodeIterator);
         }
     }
     return isSorted;
 }
 
 
+
 /*-----------------------------------------------------------------------------------------------*/
-int splitListInTwoHalves(List ** list, List ** listA, List ** listB)
+int
+listSplitInHalves(List ** list, List ** listA, List ** listB)
 {
-    *listA = createEmptyList();
-    *listB = createEmptyList();
+    *listA = listCreate();
+    *listB = listCreate();
 
     if(list != NULL && *list != NULL && *listA!= NULL && *listB != NULL)
     {
-        int initialListLength = getListLength(*list);
+        int initialListLength = listGetLength(*list);
 
         if(initialListLength == 1)
         {
-            insertToFrontOfList(*listA, popFromFrontOfList(*list));
+            listInsertToFrontOf(*listA, listPopFromFrontOf(*list));
         }
         else
         {
             if(initialListLength == 2)
             {
-                insertToFrontOfList(*listA, popFromFrontOfList(*list));
-                insertToFrontOfList(*listB, popFromFrontOfList(*list));
+                listInsertToFrontOf(*listA, listPopFromFrontOf(*list));
+                listInsertToFrontOf(*listB, listPopFromFrontOf(*list));
             }
             else
             {
                 ListNode * slow = (*list)->first;
                 ListNode * fast = slow;
 
-                while(getNextListNode(fast) != NULL)
+                while(listNodeGetNext(fast) != NULL)
                 {
-                    fast = getNextListNode(fast);
-                    if(getNextListNode(fast) != NULL)
+                    fast = listNodeGetNext(fast);
+                    if(listNodeGetNext(fast) != NULL)
                     {
-                        fast = getNextListNode(fast);
-                        slow = getNextListNode(slow);
+                        fast = listNodeGetNext(fast);
+                        slow = listNodeGetNext(slow);
                     }
                     else
                     {
@@ -580,8 +561,8 @@ int splitListInTwoHalves(List ** list, List ** listA, List ** listB)
                 (*listA)->hasListBeenSorted = 0;
                 (*listA)->length = initialListLength/2 + initialListLength%2;
 
-                (*listB)->first = getNextListNode(slow);
-                setNextListNode(slow, NULL);
+                (*listB)->first = listNodeGetNext(slow);
+                listNodeSetNext(slow, NULL);
                 (*listB)->last = (*list)->last;
                 (*listB)->hasListBeenSorted = 0;
                 (*listB)->length = initialListLength/2;
@@ -592,7 +573,7 @@ int splitListInTwoHalves(List ** list, List ** listA, List ** listB)
         (*list)->last = NULL;
         (*list)->length = 0;
         (*list)->hasListBeenSorted = 0;
-        destroyList(*list);
+        listDestroy(*list);
         *list = NULL;
 
         return SUCCESS;
@@ -604,8 +585,10 @@ int splitListInTwoHalves(List ** list, List ** listA, List ** listB)
 }
 
 
+
 /*-----------------------------------------------------------------------------------------------*/
-int getListLengthByCounting(List * list)
+int
+listGetLengthByCounting(List * list)
 {
     int count = 0;
 
@@ -614,7 +597,7 @@ int getListLengthByCounting(List * list)
         for (
             ListNode * nodeIterator = list->first;
             nodeIterator != NULL;
-            nodeIterator = getNextListNode(nodeIterator)
+            nodeIterator = listNodeGetNext(nodeIterator)
             )
         {
             count++;
@@ -623,15 +606,18 @@ int getListLengthByCounting(List * list)
     return count;
 }
 
+
+
 /*-----------------------------------------------------------------------------------------------*/
-void destroyList(void * list)
+void
+listDestroy(void * list)
 {
     if (list != NULL)
     {
         for (ListNode * node = ((List*) list)->first; node != NULL; )
         {
-            ListNode * nextNode = getNextListNode(node);
-            destroyListNode(node);
+            ListNode * nextNode = listNodeGetNext(node);
+            listNodeDestroy(node);
             node = nextNode;
         }
     }

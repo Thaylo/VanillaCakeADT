@@ -4,6 +4,7 @@
 #include <iostream>
 #include "List.h"
 #include "DataObject.h"
+#include "test_General_Helpers.h"
 
 int populateListWithFloats(List * list, int numberOfElements, int isRandom);
 
