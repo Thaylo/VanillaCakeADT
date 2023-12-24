@@ -1,0 +1,35 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "C/C++: cmake build active file",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "${workspaceFolder}/build",
+                "--target",
+                "VanillaCake",
+                "--config",
+                "Debug",
+                "--clean-first"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "C/C++: cmake build Google Tests",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "${workspaceFolder}/build/tests",
+                "--target",
+                "unit_tests",
+                "--config",
+                "Debug",
+                "--clean-first"
+            ],
+            "group": "build"
+        }
+    ]
+}

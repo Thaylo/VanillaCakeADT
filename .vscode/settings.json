@@ -1,0 +1,8 @@
+{
+  "files.associations": {
+    // "dataobject.h": "c"
+  },
+  "cmake.configureSettings": {
+    "gtest_build_samples": "ON"
+  }
+}
